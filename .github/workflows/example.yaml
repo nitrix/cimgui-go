@@ -54,29 +54,9 @@ jobs:
           go generate ./...
           git diff --exit-code
 
-  macOSamd64:
-    name: MacOS (amd64)
-    runs-on: macos-13
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: stable
-          cache: false
-      - name: Verify Go
-        run: go version
-      - name: Build
-        run: |
-          go build -ldflags="-s -w" -o poc ./example
-      - name: Test
-        run: |
-          go test ./...
-
   macOSarm64:
-    name: MacOS (arm64)
-    runs-on: macos-14
+    name: MacOS
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
