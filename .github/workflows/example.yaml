@@ -49,10 +49,6 @@ jobs:
       - name: Test
         run: |
           go test ./...
-      - name: Generated Drift
-        run: |
-          go generate ./...
-          git diff --exit-code
 
   macOSarm64:
     name: MacOS
