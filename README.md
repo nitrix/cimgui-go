@@ -4,7 +4,7 @@ A binding library of imgui for Go.
 
 ## Example
 
-![example-1.91.4.png](example-1.91.4.png)
+![example-1.92.8.png](example-1.92.8.png)
 
 Try the example with `go run github.com/nitrix/imgui-go/example@latest`.
 

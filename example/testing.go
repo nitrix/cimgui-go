@@ -10,6 +10,19 @@ import (
 var dummyBool bool
 var dummyInt int
 var dummyVec3 = mgl32.Vec3{0.5, 0.5, 0.5}
+var dummyTextBuffer = func() []byte {
+	buf := make([]byte, 256)
+	copy(buf, "Edit me")
+	return buf
+}()
+
+func bufferString(buf []byte) string {
+	n := 0
+	for n < len(buf) && buf[n] != 0 {
+		n++
+	}
+	return string(buf[:n])
+}
 
 func testing() {
 	imgui.Begin("Testing", nil, imgui.WindowFlags_None)
@@ -32,6 +45,10 @@ func testing() {
 
 	if imgui.ColorPicker3("Color", &dummyVec3, imgui.ColorEditFlags_None) {
 		fmt.Println(dummyVec3)
+	}
+
+	if imgui.InputText("Input", dummyTextBuffer, imgui.InputTextFlags_None, nil, nil) {
+		fmt.Printf("Input: %q\n", bufferString(dummyTextBuffer))
 	}
 
 	imgui.End()

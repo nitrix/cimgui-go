@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"slices"
 	"sort"
 	"strings"
@@ -44,6 +45,12 @@ type definitionT struct {
 	Name           string `json:"cimguiname"`
 	OverloadedName string `json:"ov_cimguiname"`
 	Ret            string `json:"ret"`
+}
+
+var cEnumCastPattern = regexp.MustCompile(`\([A-Za-z_][A-Za-z0-9_]*\)`)
+
+func isUnsupportedFeatureSymbol(name string) bool {
+	return strings.Contains(name, "FreeType")
 }
 
 func main() {
@@ -87,7 +94,7 @@ func main() {
 	copyFile("thirdparty/cimgui/cimgui.cpp", "dist/cimgui/cimgui.cpp")
 	copyFile("thirdparty/cimgui/cimgui.h", "dist/cimgui/cimgui.h")
 	copyFile("thirdparty/cimgui/cimconfig.h", "dist/cimgui/cimconfig.h")
-	copyFile("thirdparty/cimgui/generator/output/cimgui_impl.h", "dist/cimgui/cimgui_impl.h")
+	copyFile("thirdparty/cimgui/cimgui_impl.h", "dist/cimgui/cimgui_impl.h")
 
 	copyFile("thirdparty/cimgui/imgui/imgui.h", "dist/imgui/imgui.h")
 	copyFile("thirdparty/cimgui/imgui/imconfig.h", "dist/imgui/imconfig.h")
@@ -155,10 +162,14 @@ func generateConstants(structsAndEnums *structsAndEnumsT) {
 	})
 
 	for _, field := range flattenedEnums {
+		if isUnsupportedFeatureSymbol(field.Name) {
+			continue
+		}
+
 		renamedName := strings.ReplaceAll(field.Name, "ImGui", "")
 		renamedValue := strings.ReplaceAll(field.Value, "ImGui", "")
 		renamedValue = strings.ReplaceAll(renamedValue, "~", "^")
-		renamedValue = strings.ReplaceAll(renamedValue, "(int)", "")
+		renamedValue = cEnumCastPattern.ReplaceAllString(renamedValue, "")
 
 		constantsContent.WriteString(fmt.Sprintf("const %s = %s\n", renamedName, renamedValue))
 	}
@@ -202,11 +213,16 @@ func generateTypedefs(typedefsDict typedefsDictT) {
 
 	blacklist := []string{
 		"const_iterator", "iterator", "value_type", "STB_TexteditState",
+		"stbrp_context_opaque", "stbrp_node", "stbrp_node_im",
 		"ImVec1", "ImVec2", "ImVec2ih", "ImVec4", // These are specially handled and replaced by mgl32.Vec2 and mgl32.Vec4.
 	}
 
 	for _, name := range sortedNames {
 		if slices.Contains(blacklist, name) {
+			continue
+		}
+
+		if isUnsupportedFeatureSymbol(name) {
 			continue
 		}
 
@@ -381,6 +397,18 @@ func cToGoType(cType string) string {
 	}
 
 	switch cType {
+	case "ImRect_c*":
+		return "*Rect"
+	case "ImRect_c":
+		return "Rect"
+	case "ImVec2_c*":
+		return "*mgl32.Vec2"
+	case "ImVec2_c":
+		return "mgl32.Vec2"
+	case "ImVec4_c":
+		return "mgl32.Vec4"
+	case "ImVec4_c*":
+		return "*mgl32.Vec4"
 	case "ImVec2*":
 		return "*mgl32.Vec2"
 	case "ImVec2":
@@ -422,6 +450,32 @@ func safeIdentifier(s string) string {
 	}
 
 	return s
+}
+
+func goArgumentType(def definitionT, argIndex int) string {
+	arg := def.ArgsT[argIndex]
+	if arg.Type == "char*" {
+		return "[]byte"
+	}
+	return cToGoType(arg.Type)
+}
+
+func isCharBufferSizeArgument(def definitionT, argIndex int) bool {
+	if argIndex == 0 {
+		return false
+	}
+
+	arg := def.ArgsT[argIndex]
+	if arg.Type != "int" && arg.Type != "size_t" {
+		return false
+	}
+
+	previousArg := def.ArgsT[argIndex-1]
+	if previousArg.Type != "char*" {
+		return false
+	}
+
+	return strings.Contains(strings.ToLower(arg.Name), "size")
 }
 
 func generateDefinitions(definitions definitionsT) {
@@ -510,23 +564,21 @@ func generateDefinitions(definitions definitionsT) {
 		// Parameters.
 		hasVariadic := false
 		{
+			params := []string{}
 			for i, arg := range def.ArgsT {
-				if i > 0 {
-					output.WriteString(", ")
-				}
-
 				isNextArgumentVariadic := len(def.ArgsT) > i+1 && def.ArgsT[i+1].Name == "..."
 
 				if isNextArgumentVariadic {
-					output.WriteString("vfmt string, vargs ...interface{}")
+					params = append(params, "vfmt string, vargs ...interface{}")
 					hasVariadic = true
 					break
+				} else if isCharBufferSizeArgument(def, i) {
+					continue
 				} else {
-					output.WriteString(safeIdentifier(arg.Name))
-					output.WriteString(" ")
-					output.WriteString(cToGoType(arg.Type))
+					params = append(params, fmt.Sprintf("%s %s", safeIdentifier(arg.Name), goArgumentType(def, i)))
 				}
 			}
+			output.WriteString(strings.Join(params, ", "))
 		}
 
 		output.WriteString(") ")
@@ -553,35 +605,44 @@ func generateDefinitions(definitions definitionsT) {
 				expr := safeIdentifier(arg.Name)
 
 				cType := arg.Type
-				goType := cToGoType(cType)
+				goType := goArgumentType(def, i)
 				cgoType := cToCgoType(cType)
 
 				if isNextArgumentVariadic {
 					expr = "fmt.Sprintf(vfmt, vargs...)"
 				}
 
-				switch goType {
-				case "string":
-					expr = fmt.Sprintf("stringPool.StoreCString(%s)", expr)
-				case "mgl32.Vec2":
-					expr = fmt.Sprintf("mglVec2ToImVec2(%s)", expr)
-				case "mgl32.Vec4":
-					expr = fmt.Sprintf("mglVec4ToImVec4(%s)", expr)
-				case "*mgl32.Vec2":
-					expr = fmt.Sprintf("(%s)(unsafe.Pointer(&%s[0]))", cgoType, expr)
-				case "*mgl32.Vec4":
-					expr = fmt.Sprintf("(%s)(unsafe.Pointer(&%s[0]))", cgoType, expr)
-				default:
-					if strings.HasPrefix(goType, "[") {
-						expr = fmt.Sprintf("&%s[0]", expr)
+				if cType == "char*" {
+					output.WriteString(fmt.Sprintf("(*C.char)(nil)\n\tif len(%s) > 0 {\n\t\ta%d = (*C.char)(unsafe.Pointer(&%s[0]))\n\t}", expr, i, expr))
+				} else if isCharBufferSizeArgument(def, i) {
+					previousArgName := safeIdentifier(def.ArgsT[i-1].Name)
+					output.WriteString(fmt.Sprintf("(%s)(len(%s))", cgoType, previousArgName))
+				} else {
+					switch goType {
+					case "string":
+						expr = fmt.Sprintf("stringPool.StoreCString(%s)", expr)
+					case "mgl32.Vec2":
+						expr = fmt.Sprintf("mglVec2ToImVec2(%s)", expr)
+					case "mgl32.Vec4":
+						expr = fmt.Sprintf("mglVec4ToImVec4(%s)", expr)
+					case "*mgl32.Vec2":
+						expr = fmt.Sprintf("(%s)(unsafe.Pointer(&%s[0]))", cgoType, expr)
+					case "*mgl32.Vec4":
+						expr = fmt.Sprintf("(%s)(unsafe.Pointer(&%s[0]))", cgoType, expr)
+					default:
+						if strings.HasPrefix(goType, "[") {
+							expr = fmt.Sprintf("&%s[0]", expr)
+						}
+						if strings.HasPrefix(cgoType, "*") {
+							expr = fmt.Sprintf("unsafe.Pointer(%s)", expr)
+						}
+						expr = fmt.Sprintf("(%s)(%s)", cgoType, expr)
 					}
-					if strings.HasPrefix(cgoType, "*") {
-						expr = fmt.Sprintf("unsafe.Pointer(%s)", expr)
-					}
-					expr = fmt.Sprintf("(%s)(%s)", cgoType, expr)
+
+					output.WriteString(expr)
 				}
 
-				output.WriteString(fmt.Sprintf("%s\n", expr))
+				output.WriteString("\n")
 
 				if isNextArgumentVariadic {
 					break
@@ -621,14 +682,19 @@ func generateDefinitions(definitions definitionsT) {
 
 				if goType == "string" {
 					expr = fmt.Sprintf("C.GoString(%s)", expr)
+				} else if goType == "mgl32.Vec2" {
+					expr = fmt.Sprintf("imVec2ToMglVec2(%s)", expr)
+				} else if goType == "mgl32.Vec4" {
+					expr = fmt.Sprintf("imVec4ToMglVec4(%s)", expr)
+				} else if goType == "*mgl32.Vec2" {
+					expr = fmt.Sprintf("(*mgl32.Vec2)(unsafe.Pointer(%s))", expr)
 				} else if goType == "*mgl32.Vec4" {
 					expr = fmt.Sprintf("(*mgl32.Vec4)(unsafe.Pointer(%s))", expr)
 				} else {
 					expr = fmt.Sprintf("(%s)(%s)", goType, expr)
 				}
 
-				output.WriteString(fmt.Sprintf("\tr := %s\n", expr))
-				output.WriteString("\treturn r\n")
+				output.WriteString(fmt.Sprintf("\treturn %s\n", expr))
 			}
 		}
 

@@ -1,7 +1,7 @@
 #define CIMGUI_DEFINE_ENUMS_AND_STRUCTS 1
 #include "dist/cimgui/cimgui.h"
 
-void wrap_ImGuiTextBuffer_appendf(ImGuiTextBuffer* self, const char* fmt) {
+void wrap_ImGuiTextBuffer_appendf(ImGuiTextBuffer* self,  const char* fmt) {
 	ImGuiTextBuffer_appendf(self, fmt);
 }
 
@@ -39,6 +39,10 @@ void wrap_igSetTooltip(const char* fmt) {
 
 void wrap_igText(const char* fmt) {
 	igText(fmt);
+}
+
+void wrap_igTextAligned(float align_x, float size_x, const char* fmt) {
+	igTextAligned(align_x, size_x, fmt);
 }
 
 void wrap_igTextColored(const ImVec4 col, const char* fmt) {

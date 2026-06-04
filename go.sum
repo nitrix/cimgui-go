@@ -12,6 +12,8 @@ github.com/nitrix/glfw-go v0.0.0-20241030215014-480be893f962 h1:mCTtBAaeQvWpTs0P
 github.com/nitrix/glfw-go v0.0.0-20241030215014-480be893f962/go.mod h1:C3O0FM3UuTLT620w4khrkJiIc2gr/IY6EwAXCNOFWFg=
 github.com/nitrix/glfw-go v0.0.0-20241031000752-4eb4bd37034c h1:Vike+M4hSN7D4T2u2a++hS7aAOsAPJdJL6Kqp0iILbk=
 github.com/nitrix/glfw-go v0.0.0-20241031000752-4eb4bd37034c/go.mod h1:C3O0FM3UuTLT620w4khrkJiIc2gr/IY6EwAXCNOFWFg=
+github.com/nitrix/glfw-go v0.0.0-20260603235204-f705e45024ad h1:H7ujD1P3K0iv01BlF3sT6eb8/Hngfm8mcglMjt/HmTA=
+github.com/nitrix/glfw-go v0.0.0-20260603235204-f705e45024ad/go.mod h1:C3O0FM3UuTLT620w4khrkJiIc2gr/IY6EwAXCNOFWFg=
 golang.org/x/image v0.0.0-20190321063152-3fc05d484e9f/go.mod h1:kZ7UVZpmo3dzQBMxlp+ypCbDeSB+sBbTgSJuh5dn5js=
 golang.org/x/image v0.21.0 h1:c5qV36ajHpdj4Qi0GnE0jUc/yuo33OLFaa0d+crTD5s=
 golang.org/x/image v0.21.0/go.mod h1:vUbsLavqK/W303ZroQQVKQ+Af3Yl6Uz1Ppu5J/cLz78=

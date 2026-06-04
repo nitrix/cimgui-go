@@ -24,7 +24,6 @@ type WindowDockStyleCol C.ImGuiWindowDockStyleCol
 type NavLayer C.ImGuiNavLayer
 type SortDirection C.ImGuiSortDirection
 type PlotType C.ImGuiPlotType
-type LogType C.ImGuiLogType
 type SelectionRequestType C.ImGuiSelectionRequestType
 type InputSource C.ImGuiInputSource
 type DockNodeState C.ImGuiDockNodeState
@@ -38,18 +37,18 @@ func NewFrame() {
 	C.igNewFrame()
 }
 
-func imVec2ToMglVec2(v C.ImVec2) mgl32.Vec2 {
+func imVec2ToMglVec2(v C.ImVec2_c) mgl32.Vec2 {
 	return mgl32.Vec2{float32(v.x), float32(v.y)}
 }
 
-func imVec4ToMglVec4(v C.ImVec4) mgl32.Vec4 {
+func imVec4ToMglVec4(v C.ImVec4_c) mgl32.Vec4 {
 	return mgl32.Vec4{float32(v.x), float32(v.y), float32(v.z), float32(v.w)}
 }
 
-func mglVec2ToImVec2(v mgl32.Vec2) C.ImVec2 {
-	return C.ImVec2{x: C.float(v.X()), y: C.float(v.Y())}
+func mglVec2ToImVec2(v mgl32.Vec2) C.ImVec2_c {
+	return C.ImVec2_c{x: C.float(v.X()), y: C.float(v.Y())}
 }
 
-func mglVec4ToImVec4(v mgl32.Vec4) C.ImVec4 {
-	return C.ImVec4{x: C.float(v.X()), y: C.float(v.Y()), z: C.float(v.Z()), w: C.float(v.W())}
+func mglVec4ToImVec4(v mgl32.Vec4) C.ImVec4_c {
+	return C.ImVec4_c{x: C.float(v.X()), y: C.float(v.Y()), z: C.float(v.Z()), w: C.float(v.W())}
 }

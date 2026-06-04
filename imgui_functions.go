@@ -13,8 +13,7 @@ func AcceptDragDropPayload(ty string, flags DragDropFlags) *Payload {
 	a0 := stringPool.StoreCString(ty)
 	a1 := (C.ImGuiDragDropFlags)(flags)
 	call := C.igAcceptDragDropPayload(a0, a1)
-	r := (*Payload)(call)
-	return r
+	return (*Payload)(call)
 }
 
 func ActivateItemByID(id ID) {
@@ -22,12 +21,11 @@ func ActivateItemByID(id ID) {
 	C.igActivateItemByID(a0)
 }
 
-func AddContextHook(context *Context, hook *ContextHook) ID {
-	a0 := (*C.ImGuiContext)(unsafe.Pointer(context))
+func AddContextHook(ctx *Context, hook *ContextHook) ID {
+	a0 := (*C.ImGuiContext)(unsafe.Pointer(ctx))
 	a1 := (*C.ImGuiContextHook)(unsafe.Pointer(hook))
 	call := C.igAddContextHook(a0, a1)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func AddSettingsHandler(handler *SettingsHandler) {
@@ -43,8 +41,7 @@ func ArrowButton(strId string, dir Dir) bool {
 	a0 := stringPool.StoreCString(strId)
 	a1 := (C.ImGuiDir)(dir)
 	call := C.igArrowButton(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ArrowButtonEx(strId string, dir Dir, sizeArg mgl32.Vec2, flags ButtonFlags) bool {
@@ -53,8 +50,7 @@ func ArrowButtonEx(strId string, dir Dir, sizeArg mgl32.Vec2, flags ButtonFlags)
 	a2 := mglVec2ToImVec2(sizeArg)
 	a3 := (C.ImGuiButtonFlags)(flags)
 	call := C.igArrowButtonEx(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func Begin(name string, pOpen *bool, flags WindowFlags) bool {
@@ -62,8 +58,7 @@ func Begin(name string, pOpen *bool, flags WindowFlags) bool {
 	a1 := (*C.bool)(unsafe.Pointer(pOpen))
 	a2 := (C.ImGuiWindowFlags)(flags)
 	call := C.igBegin(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginBoxSelect(scopeRect Rect, window *Window, boxSelectId ID, msFlags MultiSelectFlags) bool {
@@ -72,8 +67,7 @@ func BeginBoxSelect(scopeRect Rect, window *Window, boxSelectId ID, msFlags Mult
 	a2 := (C.ImGuiID)(boxSelectId)
 	a3 := (C.ImGuiMultiSelectFlags)(msFlags)
 	call := C.igBeginBoxSelect(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginChildEx(name string, id ID, sizeArg mgl32.Vec2, childFlags ChildFlags, windowFlags WindowFlags) bool {
@@ -83,8 +77,7 @@ func BeginChildEx(name string, id ID, sizeArg mgl32.Vec2, childFlags ChildFlags,
 	a3 := (C.ImGuiChildFlags)(childFlags)
 	a4 := (C.ImGuiWindowFlags)(windowFlags)
 	call := C.igBeginChildEx(a0, a1, a2, a3, a4)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginChild_ID(id ID, size mgl32.Vec2, childFlags ChildFlags, windowFlags WindowFlags) bool {
@@ -93,8 +86,7 @@ func BeginChild_ID(id ID, size mgl32.Vec2, childFlags ChildFlags, windowFlags Wi
 	a2 := (C.ImGuiChildFlags)(childFlags)
 	a3 := (C.ImGuiWindowFlags)(windowFlags)
 	call := C.igBeginChild_ID(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginChild_Str(strId string, size mgl32.Vec2, childFlags ChildFlags, windowFlags WindowFlags) bool {
@@ -103,8 +95,7 @@ func BeginChild_Str(strId string, size mgl32.Vec2, childFlags ChildFlags, window
 	a2 := (C.ImGuiChildFlags)(childFlags)
 	a3 := (C.ImGuiWindowFlags)(windowFlags)
 	call := C.igBeginChild_Str(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginColumns(strId string, count int, flags OldColumnFlags) {
@@ -119,8 +110,7 @@ func BeginCombo(label string, previewValue string, flags ComboFlags) bool {
 	a1 := stringPool.StoreCString(previewValue)
 	a2 := (C.ImGuiComboFlags)(flags)
 	call := C.igBeginCombo(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginComboPopup(popupId ID, bb Rect, flags ComboFlags) bool {
@@ -128,14 +118,12 @@ func BeginComboPopup(popupId ID, bb Rect, flags ComboFlags) bool {
 	a1 := (C.ImRect)(bb)
 	a2 := (C.ImGuiComboFlags)(flags)
 	call := C.igBeginComboPopup(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginComboPreview() bool {
 	call := C.igBeginComboPreview()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginDisabled(disabled bool) {
@@ -166,28 +154,31 @@ func BeginDocked(window *Window, pOpen *bool) {
 func BeginDragDropSource(flags DragDropFlags) bool {
 	a0 := (C.ImGuiDragDropFlags)(flags)
 	call := C.igBeginDragDropSource(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginDragDropTarget() bool {
 	call := C.igBeginDragDropTarget()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginDragDropTargetCustom(bb Rect, id ID) bool {
 	a0 := (C.ImRect)(bb)
 	a1 := (C.ImGuiID)(id)
 	call := C.igBeginDragDropTargetCustom(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
+}
+
+func BeginDragDropTargetViewport(viewport *Viewport, pBb *Rect) bool {
+	a0 := (*C.ImGuiViewport)(unsafe.Pointer(viewport))
+	a1 := (*C.ImRect)(unsafe.Pointer(pBb))
+	call := C.igBeginDragDropTargetViewport(a0, a1)
+	return (bool)(call)
 }
 
 func BeginErrorTooltip() bool {
 	call := C.igBeginErrorTooltip()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginGroup() {
@@ -196,36 +187,31 @@ func BeginGroup() {
 
 func BeginItemTooltip() bool {
 	call := C.igBeginItemTooltip()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginListBox(label string, size mgl32.Vec2) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := mglVec2ToImVec2(size)
 	call := C.igBeginListBox(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginMainMenuBar() bool {
 	call := C.igBeginMainMenuBar()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginMenu(label string, enabled bool) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (C.bool)(enabled)
 	call := C.igBeginMenu(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginMenuBar() bool {
 	call := C.igBeginMenuBar()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginMenuEx(label string, icon string, enabled bool) bool {
@@ -233,8 +219,7 @@ func BeginMenuEx(label string, icon string, enabled bool) bool {
 	a1 := stringPool.StoreCString(icon)
 	a2 := (C.bool)(enabled)
 	call := C.igBeginMenuEx(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginMultiSelect(flags MultiSelectFlags, selectionSize int, itemsCount int) *MultiSelectIO {
@@ -242,48 +227,50 @@ func BeginMultiSelect(flags MultiSelectFlags, selectionSize int, itemsCount int)
 	a1 := (C.int)(selectionSize)
 	a2 := (C.int)(itemsCount)
 	call := C.igBeginMultiSelect(a0, a1, a2)
-	r := (*MultiSelectIO)(call)
-	return r
+	return (*MultiSelectIO)(call)
 }
 
 func BeginPopup(strId string, flags WindowFlags) bool {
 	a0 := stringPool.StoreCString(strId)
 	a1 := (C.ImGuiWindowFlags)(flags)
 	call := C.igBeginPopup(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginPopupContextItem(strId string, popupFlags PopupFlags) bool {
 	a0 := stringPool.StoreCString(strId)
 	a1 := (C.ImGuiPopupFlags)(popupFlags)
 	call := C.igBeginPopupContextItem(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginPopupContextVoid(strId string, popupFlags PopupFlags) bool {
 	a0 := stringPool.StoreCString(strId)
 	a1 := (C.ImGuiPopupFlags)(popupFlags)
 	call := C.igBeginPopupContextVoid(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginPopupContextWindow(strId string, popupFlags PopupFlags) bool {
 	a0 := stringPool.StoreCString(strId)
 	a1 := (C.ImGuiPopupFlags)(popupFlags)
 	call := C.igBeginPopupContextWindow(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginPopupEx(id ID, extraWindowFlags WindowFlags) bool {
 	a0 := (C.ImGuiID)(id)
 	a1 := (C.ImGuiWindowFlags)(extraWindowFlags)
 	call := C.igBeginPopupEx(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
+}
+
+func BeginPopupMenuEx(id ID, label string, extraWindowFlags WindowFlags) bool {
+	a0 := (C.ImGuiID)(id)
+	a1 := stringPool.StoreCString(label)
+	a2 := (C.ImGuiWindowFlags)(extraWindowFlags)
+	call := C.igBeginPopupMenuEx(a0, a1, a2)
+	return (bool)(call)
 }
 
 func BeginPopupModal(name string, pOpen *bool, flags WindowFlags) bool {
@@ -291,16 +278,14 @@ func BeginPopupModal(name string, pOpen *bool, flags WindowFlags) bool {
 	a1 := (*C.bool)(unsafe.Pointer(pOpen))
 	a2 := (C.ImGuiWindowFlags)(flags)
 	call := C.igBeginPopupModal(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginTabBar(strId string, flags TabBarFlags) bool {
 	a0 := stringPool.StoreCString(strId)
 	a1 := (C.ImGuiTabBarFlags)(flags)
 	call := C.igBeginTabBar(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginTabBarEx(tabBar *TabBar, bb Rect, flags TabBarFlags) bool {
@@ -308,8 +293,7 @@ func BeginTabBarEx(tabBar *TabBar, bb Rect, flags TabBarFlags) bool {
 	a1 := (C.ImRect)(bb)
 	a2 := (C.ImGuiTabBarFlags)(flags)
 	call := C.igBeginTabBarEx(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginTabItem(label string, pOpen *bool, flags TabItemFlags) bool {
@@ -317,8 +301,7 @@ func BeginTabItem(label string, pOpen *bool, flags TabItemFlags) bool {
 	a1 := (*C.bool)(unsafe.Pointer(pOpen))
 	a2 := (C.ImGuiTabItemFlags)(flags)
 	call := C.igBeginTabItem(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginTable(strId string, columns int, flags TableFlags, outerSize mgl32.Vec2, innerWidth float32) bool {
@@ -328,8 +311,7 @@ func BeginTable(strId string, columns int, flags TableFlags, outerSize mgl32.Vec
 	a3 := mglVec2ToImVec2(outerSize)
 	a4 := (C.float)(innerWidth)
 	call := C.igBeginTable(a0, a1, a2, a3, a4)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginTableEx(name string, id ID, columnsCount int, flags TableFlags, outerSize mgl32.Vec2, innerWidth float32) bool {
@@ -340,28 +322,24 @@ func BeginTableEx(name string, id ID, columnsCount int, flags TableFlags, outerS
 	a4 := mglVec2ToImVec2(outerSize)
 	a5 := (C.float)(innerWidth)
 	call := C.igBeginTableEx(a0, a1, a2, a3, a4, a5)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginTooltip() bool {
 	call := C.igBeginTooltip()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginTooltipEx(tooltipFlags TooltipFlags, extraWindowFlags WindowFlags) bool {
 	a0 := (C.ImGuiTooltipFlags)(tooltipFlags)
 	a1 := (C.ImGuiWindowFlags)(extraWindowFlags)
 	call := C.igBeginTooltipEx(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginTooltipHidden() bool {
 	call := C.igBeginTooltipHidden()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BeginViewportSideBar(name string, viewport *Viewport, dir Dir, size float32, windowFlags WindowFlags) bool {
@@ -371,8 +349,7 @@ func BeginViewportSideBar(name string, viewport *Viewport, dir Dir, size float32
 	a3 := (C.float)(size)
 	a4 := (C.ImGuiWindowFlags)(windowFlags)
 	call := C.igBeginViewportSideBar(a0, a1, a2, a3, a4)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func BringWindowToDisplayBack(window *Window) {
@@ -409,8 +386,7 @@ func Button(label string, size mgl32.Vec2) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := mglVec2ToImVec2(size)
 	call := C.igButton(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ButtonBehavior(bb Rect, id ID, outHovered *bool, outHeld *bool, flags ButtonFlags) bool {
@@ -420,8 +396,7 @@ func ButtonBehavior(bb Rect, id ID, outHovered *bool, outHeld *bool, flags Butto
 	a3 := (*C.bool)(unsafe.Pointer(outHeld))
 	a4 := (C.ImGuiButtonFlags)(flags)
 	call := C.igButtonBehavior(a0, a1, a2, a3, a4)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ButtonEx(label string, sizeArg mgl32.Vec2, flags ButtonFlags) bool {
@@ -429,22 +404,29 @@ func ButtonEx(label string, sizeArg mgl32.Vec2, flags ButtonFlags) bool {
 	a1 := mglVec2ToImVec2(sizeArg)
 	a2 := (C.ImGuiButtonFlags)(flags)
 	call := C.igButtonEx(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
-func CalcItemSize(pOut *mgl32.Vec2, size mgl32.Vec2, defaultW float32, defaultH float32) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	a1 := mglVec2ToImVec2(size)
-	a2 := (C.float)(defaultW)
-	a3 := (C.float)(defaultH)
-	C.igCalcItemSize(a0, a1, a2, a3)
+func CalcClipRectVisibleItemsY(clipRect Rect, pos mgl32.Vec2, itemsHeight float32, outVisibleStart *int, outVisibleEnd *int) {
+	a0 := (C.ImRect)(clipRect)
+	a1 := mglVec2ToImVec2(pos)
+	a2 := (C.float)(itemsHeight)
+	a3 := (*C.int)(unsafe.Pointer(outVisibleStart))
+	a4 := (*C.int)(unsafe.Pointer(outVisibleEnd))
+	C.igCalcClipRectVisibleItemsY(a0, a1, a2, a3, a4)
+}
+
+func CalcItemSize(size mgl32.Vec2, defaultW float32, defaultH float32) mgl32.Vec2 {
+	a0 := mglVec2ToImVec2(size)
+	a1 := (C.float)(defaultW)
+	a2 := (C.float)(defaultH)
+	call := C.igCalcItemSize(a0, a1, a2)
+	return imVec2ToMglVec2(call)
 }
 
 func CalcItemWidth() float32 {
 	call := C.igCalcItemWidth()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func CalcRoundingFlagsForRectInRect(rIn Rect, rOuter Rect, threshold float32) DrawFlags {
@@ -452,17 +434,16 @@ func CalcRoundingFlagsForRectInRect(rIn Rect, rOuter Rect, threshold float32) Dr
 	a1 := (C.ImRect)(rOuter)
 	a2 := (C.float)(threshold)
 	call := C.igCalcRoundingFlagsForRectInRect(a0, a1, a2)
-	r := (DrawFlags)(call)
-	return r
+	return (DrawFlags)(call)
 }
 
-func CalcTextSize(pOut *mgl32.Vec2, text string, textEnd string, hideTextAfterDoubleHash bool, wrapWidth float32) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	a1 := stringPool.StoreCString(text)
-	a2 := stringPool.StoreCString(textEnd)
-	a3 := (C.bool)(hideTextAfterDoubleHash)
-	a4 := (C.float)(wrapWidth)
-	C.igCalcTextSize(a0, a1, a2, a3, a4)
+func CalcTextSize(text string, textEnd string, hideTextAfterDoubleHash bool, wrapWidth float32) mgl32.Vec2 {
+	a0 := stringPool.StoreCString(text)
+	a1 := stringPool.StoreCString(textEnd)
+	a2 := (C.bool)(hideTextAfterDoubleHash)
+	a3 := (C.float)(wrapWidth)
+	call := C.igCalcTextSize(a0, a1, a2, a3)
+	return imVec2ToMglVec2(call)
 }
 
 func CalcTypematicRepeatAmount(t0 float32, t1 float32, repeatDelay float32, repeatRate float32) int {
@@ -471,26 +452,24 @@ func CalcTypematicRepeatAmount(t0 float32, t1 float32, repeatDelay float32, repe
 	a2 := (C.float)(repeatDelay)
 	a3 := (C.float)(repeatRate)
 	call := C.igCalcTypematicRepeatAmount(a0, a1, a2, a3)
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
-func CalcWindowNextAutoFitSize(pOut *mgl32.Vec2, window *Window) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	a1 := (*C.ImGuiWindow)(unsafe.Pointer(window))
-	C.igCalcWindowNextAutoFitSize(a0, a1)
+func CalcWindowNextAutoFitSize(window *Window) mgl32.Vec2 {
+	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
+	call := C.igCalcWindowNextAutoFitSize(a0)
+	return imVec2ToMglVec2(call)
 }
 
 func CalcWrapWidthForPos(pos mgl32.Vec2, wrapPosX float32) float32 {
 	a0 := mglVec2ToImVec2(pos)
 	a1 := (C.float)(wrapPosX)
 	call := C.igCalcWrapWidthForPos(a0, a1)
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
-func CallContextHooks(context *Context, ty ContextHookType) {
-	a0 := (*C.ImGuiContext)(unsafe.Pointer(context))
+func CallContextHooks(ctx *Context, ty ContextHookType) {
+	a0 := (*C.ImGuiContext)(unsafe.Pointer(ctx))
 	a1 := (C.ImGuiContextHookType)(ty)
 	C.igCallContextHooks(a0, a1)
 }
@@ -499,8 +478,7 @@ func Checkbox(label string, v *bool) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (*C.bool)(unsafe.Pointer(v))
 	call := C.igCheckbox(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func CheckboxFlags_IntPtr(label string, flags *int, flagsValue int) bool {
@@ -508,8 +486,7 @@ func CheckboxFlags_IntPtr(label string, flags *int, flagsValue int) bool {
 	a1 := (*C.int)(unsafe.Pointer(flags))
 	a2 := (C.int)(flagsValue)
 	call := C.igCheckboxFlags_IntPtr(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func CheckboxFlags_S64Ptr(label string, flags *S64, flagsValue S64) bool {
@@ -517,8 +494,7 @@ func CheckboxFlags_S64Ptr(label string, flags *S64, flagsValue S64) bool {
 	a1 := (*C.ImS64)(unsafe.Pointer(flags))
 	a2 := (C.ImS64)(flagsValue)
 	call := C.igCheckboxFlags_S64Ptr(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func CheckboxFlags_U64Ptr(label string, flags *U64, flagsValue U64) bool {
@@ -526,8 +502,7 @@ func CheckboxFlags_U64Ptr(label string, flags *U64, flagsValue U64) bool {
 	a1 := (*C.ImU64)(unsafe.Pointer(flags))
 	a2 := (C.ImU64)(flagsValue)
 	call := C.igCheckboxFlags_U64Ptr(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func CheckboxFlags_UintPtr(label string, flags *uint, flagsValue uint) bool {
@@ -535,8 +510,7 @@ func CheckboxFlags_UintPtr(label string, flags *uint, flagsValue uint) bool {
 	a1 := (*C.uint)(unsafe.Pointer(flags))
 	a2 := (C.uint)(flagsValue)
 	call := C.igCheckboxFlags_UintPtr(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ClearActiveID() {
@@ -560,8 +534,7 @@ func CloseButton(id ID, pos mgl32.Vec2) bool {
 	a0 := (C.ImGuiID)(id)
 	a1 := mglVec2ToImVec2(pos)
 	call := C.igCloseButton(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func CloseCurrentPopup() {
@@ -589,8 +562,7 @@ func CollapseButton(id ID, pos mgl32.Vec2, dockNode *DockNode) bool {
 	a1 := mglVec2ToImVec2(pos)
 	a2 := (*C.ImGuiDockNode)(unsafe.Pointer(dockNode))
 	call := C.igCollapseButton(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func CollapsingHeader_BoolPtr(label string, pVisible *bool, flags TreeNodeFlags) bool {
@@ -598,16 +570,14 @@ func CollapsingHeader_BoolPtr(label string, pVisible *bool, flags TreeNodeFlags)
 	a1 := (*C.bool)(unsafe.Pointer(pVisible))
 	a2 := (C.ImGuiTreeNodeFlags)(flags)
 	call := C.igCollapsingHeader_BoolPtr(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func CollapsingHeader_TreeNodeFlags(label string, flags TreeNodeFlags) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (C.ImGuiTreeNodeFlags)(flags)
 	call := C.igCollapsingHeader_TreeNodeFlags(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ColorButton(descId string, col mgl32.Vec4, flags ColorEditFlags, size mgl32.Vec2) bool {
@@ -616,15 +586,13 @@ func ColorButton(descId string, col mgl32.Vec4, flags ColorEditFlags, size mgl32
 	a2 := (C.ImGuiColorEditFlags)(flags)
 	a3 := mglVec2ToImVec2(size)
 	call := C.igColorButton(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ColorConvertFloat4ToU32(in mgl32.Vec4) U32 {
 	a0 := mglVec4ToImVec4(in)
 	call := C.igColorConvertFloat4ToU32(a0)
-	r := (U32)(call)
-	return r
+	return (U32)(call)
 }
 
 func ColorConvertHSVtoRGB(h float32, s float32, v float32, outR *float32, outG *float32, outB *float32) {
@@ -647,10 +615,10 @@ func ColorConvertRGBtoHSV(r float32, g float32, b float32, outH *float32, outS *
 	C.igColorConvertRGBtoHSV(a0, a1, a2, a3, a4, a5)
 }
 
-func ColorConvertU32ToFloat4(pOut *mgl32.Vec4, in U32) {
-	a0 := (*C.ImVec4)(unsafe.Pointer(&pOut[0]))
-	a1 := (C.ImU32)(in)
-	C.igColorConvertU32ToFloat4(a0, a1)
+func ColorConvertU32ToFloat4(in U32) mgl32.Vec4 {
+	a0 := (C.ImU32)(in)
+	call := C.igColorConvertU32ToFloat4(a0)
+	return imVec4ToMglVec4(call)
 }
 
 func ColorEdit3(label string, col *mgl32.Vec3, flags ColorEditFlags) bool {
@@ -658,8 +626,7 @@ func ColorEdit3(label string, col *mgl32.Vec3, flags ColorEditFlags) bool {
 	a1 := (*C.float)(unsafe.Pointer(col))
 	a2 := (C.ImGuiColorEditFlags)(flags)
 	call := C.igColorEdit3(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ColorEdit4(label string, col *mgl32.Vec4, flags ColorEditFlags) bool {
@@ -667,8 +634,7 @@ func ColorEdit4(label string, col *mgl32.Vec4, flags ColorEditFlags) bool {
 	a1 := (*C.float)(unsafe.Pointer(&col[0]))
 	a2 := (C.ImGuiColorEditFlags)(flags)
 	call := C.igColorEdit4(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ColorEditOptionsPopup(col *float32, flags ColorEditFlags) {
@@ -682,8 +648,7 @@ func ColorPicker3(label string, col *mgl32.Vec3, flags ColorEditFlags) bool {
 	a1 := (*C.float)(unsafe.Pointer(col))
 	a2 := (C.ImGuiColorEditFlags)(flags)
 	call := C.igColorPicker3(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ColorPicker4(label string, col *mgl32.Vec4, flags ColorEditFlags, refCol *float32) bool {
@@ -692,8 +657,7 @@ func ColorPicker4(label string, col *mgl32.Vec4, flags ColorEditFlags, refCol *f
 	a2 := (C.ImGuiColorEditFlags)(flags)
 	a3 := (*C.float)(unsafe.Pointer(refCol))
 	call := C.igColorPicker4(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ColorPickerOptionsPopup(refCol *float32, flags ColorEditFlags) {
@@ -722,8 +686,7 @@ func Combo_Str(label string, currentItem *int, itemsSeparatedByZeros string, pop
 	a2 := stringPool.StoreCString(itemsSeparatedByZeros)
 	a3 := (C.int)(popupMaxHeightInItems)
 	call := C.igCombo_Str(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func Combo_Str_arr(label string, currentItem *int, items []string, itemsCount int, popupMaxHeightInItems int) bool {
@@ -733,29 +696,25 @@ func Combo_Str_arr(label string, currentItem *int, items []string, itemsCount in
 	a3 := (C.int)(itemsCount)
 	a4 := (C.int)(popupMaxHeightInItems)
 	call := C.igCombo_Str_arr(a0, a1, a2, a3, a4)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ConvertSingleModFlagToKey(key Key) Key {
 	a0 := (C.ImGuiKey)(key)
 	call := C.igConvertSingleModFlagToKey(a0)
-	r := (Key)(call)
-	return r
+	return (Key)(call)
 }
 
 func CreateContext(sharedFontAtlas *FontAtlas) *Context {
 	a0 := (*C.ImFontAtlas)(unsafe.Pointer(sharedFontAtlas))
 	call := C.igCreateContext(a0)
-	r := (*Context)(call)
-	return r
+	return (*Context)(call)
 }
 
 func CreateNewWindowSettings(name string) *WindowSettings {
 	a0 := stringPool.StoreCString(name)
 	call := C.igCreateNewWindowSettings(a0)
-	r := (*WindowSettings)(call)
-	return r
+	return (*WindowSettings)(call)
 }
 
 func DataTypeApplyFromText(buf string, dataType DataType, pData unsafe.Pointer, format string, pDataWhenEmpty unsafe.Pointer) bool {
@@ -765,8 +724,7 @@ func DataTypeApplyFromText(buf string, dataType DataType, pData unsafe.Pointer, 
 	a3 := stringPool.StoreCString(format)
 	a4 := (unsafe.Pointer)(pDataWhenEmpty)
 	call := C.igDataTypeApplyFromText(a0, a1, a2, a3, a4)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DataTypeApplyOp(dataType DataType, op int, output unsafe.Pointer, arg1 unsafe.Pointer, arg2 unsafe.Pointer) {
@@ -784,8 +742,7 @@ func DataTypeClamp(dataType DataType, pData unsafe.Pointer, pMin unsafe.Pointer,
 	a2 := (unsafe.Pointer)(pMin)
 	a3 := (unsafe.Pointer)(pMax)
 	call := C.igDataTypeClamp(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DataTypeCompare(dataType DataType, arg1 unsafe.Pointer, arg2 unsafe.Pointer) int {
@@ -793,34 +750,40 @@ func DataTypeCompare(dataType DataType, arg1 unsafe.Pointer, arg2 unsafe.Pointer
 	a1 := (unsafe.Pointer)(arg1)
 	a2 := (unsafe.Pointer)(arg2)
 	call := C.igDataTypeCompare(a0, a1, a2)
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
-func DataTypeFormatString(buf string, bufSize int, dataType DataType, pData unsafe.Pointer, format string) int {
-	a0 := stringPool.StoreCString(buf)
-	a1 := (C.int)(bufSize)
+func DataTypeFormatString(buf []byte, dataType DataType, pData unsafe.Pointer, format string) int {
+	a0 := (*C.char)(nil)
+	if len(buf) > 0 {
+		a0 = (*C.char)(unsafe.Pointer(&buf[0]))
+	}
+	a1 := (C.int)(len(buf))
 	a2 := (C.ImGuiDataType)(dataType)
 	a3 := (unsafe.Pointer)(pData)
 	a4 := stringPool.StoreCString(format)
 	call := C.igDataTypeFormatString(a0, a1, a2, a3, a4)
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
 func DataTypeGetInfo(dataType DataType) *DataTypeInfo {
 	a0 := (C.ImGuiDataType)(dataType)
 	call := C.igDataTypeGetInfo(a0)
-	r := (*DataTypeInfo)(call)
-	return r
+	return (*DataTypeInfo)(call)
 }
 
 func DataTypeIsZero(dataType DataType, pData unsafe.Pointer) bool {
 	a0 := (C.ImGuiDataType)(dataType)
 	a1 := (unsafe.Pointer)(pData)
 	call := C.igDataTypeIsZero(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
+}
+
+func DemoMarker(file string, line int, section string) {
+	a0 := stringPool.StoreCString(file)
+	a1 := (C.int)(line)
+	a2 := stringPool.StoreCString(section)
+	C.igDemoMarker(a0, a1, a2)
 }
 
 func DestroyContext(ctx *Context) {
@@ -841,8 +804,7 @@ func DockBuilderAddNode(nodeId ID, flags DockNodeFlags) ID {
 	a0 := (C.ImGuiID)(nodeId)
 	a1 := (C.ImGuiDockNodeFlags)(flags)
 	call := C.igDockBuilderAddNode(a0, a1)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func DockBuilderCopyWindowSettings(srcName string, dstName string) {
@@ -865,15 +827,13 @@ func DockBuilderFinish(nodeId ID) {
 func DockBuilderGetCentralNode(nodeId ID) *DockNode {
 	a0 := (C.ImGuiID)(nodeId)
 	call := C.igDockBuilderGetCentralNode(a0)
-	r := (*DockNode)(call)
-	return r
+	return (*DockNode)(call)
 }
 
 func DockBuilderGetNode(nodeId ID) *DockNode {
 	a0 := (C.ImGuiID)(nodeId)
 	call := C.igDockBuilderGetNode(a0)
-	r := (*DockNode)(call)
-	return r
+	return (*DockNode)(call)
 }
 
 func DockBuilderRemoveNode(nodeId ID) {
@@ -911,8 +871,7 @@ func DockBuilderSplitNode(nodeId ID, splitDir Dir, sizeRatioForNodeAtDir float32
 	a3 := (*C.ImGuiID)(unsafe.Pointer(outIdAtDir))
 	a4 := (*C.ImGuiID)(unsafe.Pointer(outIdAtOppositeDir))
 	call := C.igDockBuilderSplitNode(a0, a1, a2, a3, a4)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func DockContextCalcDropPosForDocking(target *Window, targetNode *DockNode, payloadWindow *Window, payloadNode *DockNode, splitDir Dir, splitOuter bool, outPos *mgl32.Vec2) bool {
@@ -924,8 +883,7 @@ func DockContextCalcDropPosForDocking(target *Window, targetNode *DockNode, payl
 	a5 := (C.bool)(splitOuter)
 	a6 := (*C.ImVec2)(unsafe.Pointer(&outPos[0]))
 	call := C.igDockContextCalcDropPosForDocking(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DockContextClearNodes(ctx *Context, rootId ID, clearSettingsRefs bool) {
@@ -944,15 +902,13 @@ func DockContextFindNodeByID(ctx *Context, id ID) *DockNode {
 	a0 := (*C.ImGuiContext)(unsafe.Pointer(ctx))
 	a1 := (C.ImGuiID)(id)
 	call := C.igDockContextFindNodeByID(a0, a1)
-	r := (*DockNode)(call)
-	return r
+	return (*DockNode)(call)
 }
 
 func DockContextGenNodeID(ctx *Context) ID {
 	a0 := (*C.ImGuiContext)(unsafe.Pointer(ctx))
 	call := C.igDockContextGenNodeID(a0)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func DockContextInitialize(ctx *Context) {
@@ -1019,8 +975,7 @@ func DockContextShutdown(ctx *Context) {
 func DockNodeBeginAmendTabBar(node *DockNode) bool {
 	a0 := (*C.ImGuiDockNode)(unsafe.Pointer(node))
 	call := C.igDockNodeBeginAmendTabBar(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DockNodeEndAmendTabBar() {
@@ -1030,30 +985,26 @@ func DockNodeEndAmendTabBar() {
 func DockNodeGetDepth(node *DockNode) int {
 	a0 := (*C.ImGuiDockNode)(unsafe.Pointer(node))
 	call := C.igDockNodeGetDepth(a0)
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
 func DockNodeGetRootNode(node *DockNode) *DockNode {
 	a0 := (*C.ImGuiDockNode)(unsafe.Pointer(node))
 	call := C.igDockNodeGetRootNode(a0)
-	r := (*DockNode)(call)
-	return r
+	return (*DockNode)(call)
 }
 
 func DockNodeGetWindowMenuButtonId(node *DockNode) ID {
 	a0 := (*C.ImGuiDockNode)(unsafe.Pointer(node))
 	call := C.igDockNodeGetWindowMenuButtonId(a0)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func DockNodeIsInHierarchyOf(node *DockNode, parent *DockNode) bool {
 	a0 := (*C.ImGuiDockNode)(unsafe.Pointer(node))
 	a1 := (*C.ImGuiDockNode)(unsafe.Pointer(parent))
 	call := C.igDockNodeIsInHierarchyOf(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DockNodeWindowMenuHandler_Default(ctx *Context, node *DockNode, tabBar *TabBar) {
@@ -1069,8 +1020,7 @@ func DockSpace(dockspaceId ID, size mgl32.Vec2, flags DockNodeFlags, windowClass
 	a2 := (C.ImGuiDockNodeFlags)(flags)
 	a3 := (*C.ImGuiWindowClass)(unsafe.Pointer(windowClass))
 	call := C.igDockSpace(a0, a1, a2, a3)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func DockSpaceOverViewport(dockspaceId ID, viewport *Viewport, flags DockNodeFlags, windowClass *WindowClass) ID {
@@ -1079,8 +1029,7 @@ func DockSpaceOverViewport(dockspaceId ID, viewport *Viewport, flags DockNodeFla
 	a2 := (C.ImGuiDockNodeFlags)(flags)
 	a3 := (*C.ImGuiWindowClass)(unsafe.Pointer(windowClass))
 	call := C.igDockSpaceOverViewport(a0, a1, a2, a3)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func DragBehavior(id ID, dataType DataType, pV unsafe.Pointer, vSpeed float32, pMin unsafe.Pointer, pMax unsafe.Pointer, format string, flags SliderFlags) bool {
@@ -1093,8 +1042,7 @@ func DragBehavior(id ID, dataType DataType, pV unsafe.Pointer, vSpeed float32, p
 	a6 := stringPool.StoreCString(format)
 	a7 := (C.ImGuiSliderFlags)(flags)
 	call := C.igDragBehavior(a0, a1, a2, a3, a4, a5, a6, a7)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DragFloat(label string, v *float32, vSpeed float32, vMin float32, vMax float32, format string, flags SliderFlags) bool {
@@ -1106,8 +1054,7 @@ func DragFloat(label string, v *float32, vSpeed float32, vMin float32, vMax floa
 	a5 := stringPool.StoreCString(format)
 	a6 := (C.ImGuiSliderFlags)(flags)
 	call := C.igDragFloat(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DragFloat2(label string, v [2]float32, vSpeed float32, vMin float32, vMax float32, format string, flags SliderFlags) bool {
@@ -1119,8 +1066,7 @@ func DragFloat2(label string, v [2]float32, vSpeed float32, vMin float32, vMax f
 	a5 := stringPool.StoreCString(format)
 	a6 := (C.ImGuiSliderFlags)(flags)
 	call := C.igDragFloat2(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DragFloat3(label string, v *mgl32.Vec3, vSpeed float32, vMin float32, vMax float32, format string, flags SliderFlags) bool {
@@ -1132,8 +1078,7 @@ func DragFloat3(label string, v *mgl32.Vec3, vSpeed float32, vMin float32, vMax 
 	a5 := stringPool.StoreCString(format)
 	a6 := (C.ImGuiSliderFlags)(flags)
 	call := C.igDragFloat3(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DragFloat4(label string, v *mgl32.Vec4, vSpeed float32, vMin float32, vMax float32, format string, flags SliderFlags) bool {
@@ -1145,8 +1090,7 @@ func DragFloat4(label string, v *mgl32.Vec4, vSpeed float32, vMin float32, vMax 
 	a5 := stringPool.StoreCString(format)
 	a6 := (C.ImGuiSliderFlags)(flags)
 	call := C.igDragFloat4(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DragFloatRange2(label string, vCurrentMin *float32, vCurrentMax *float32, vSpeed float32, vMin float32, vMax float32, format string, formatMax string, flags SliderFlags) bool {
@@ -1160,8 +1104,7 @@ func DragFloatRange2(label string, vCurrentMin *float32, vCurrentMax *float32, v
 	a7 := stringPool.StoreCString(formatMax)
 	a8 := (C.ImGuiSliderFlags)(flags)
 	call := C.igDragFloatRange2(a0, a1, a2, a3, a4, a5, a6, a7, a8)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DragInt(label string, v *int, vSpeed float32, vMin int, vMax int, format string, flags SliderFlags) bool {
@@ -1173,8 +1116,7 @@ func DragInt(label string, v *int, vSpeed float32, vMin int, vMax int, format st
 	a5 := stringPool.StoreCString(format)
 	a6 := (C.ImGuiSliderFlags)(flags)
 	call := C.igDragInt(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DragInt2(label string, v [2]int, vSpeed float32, vMin int, vMax int, format string, flags SliderFlags) bool {
@@ -1186,8 +1128,7 @@ func DragInt2(label string, v [2]int, vSpeed float32, vMin int, vMax int, format
 	a5 := stringPool.StoreCString(format)
 	a6 := (C.ImGuiSliderFlags)(flags)
 	call := C.igDragInt2(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DragInt3(label string, v [3]int, vSpeed float32, vMin int, vMax int, format string, flags SliderFlags) bool {
@@ -1199,8 +1140,7 @@ func DragInt3(label string, v [3]int, vSpeed float32, vMin int, vMax int, format
 	a5 := stringPool.StoreCString(format)
 	a6 := (C.ImGuiSliderFlags)(flags)
 	call := C.igDragInt3(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DragInt4(label string, v [4]int, vSpeed float32, vMin int, vMax int, format string, flags SliderFlags) bool {
@@ -1212,8 +1152,7 @@ func DragInt4(label string, v [4]int, vSpeed float32, vMin int, vMax int, format
 	a5 := stringPool.StoreCString(format)
 	a6 := (C.ImGuiSliderFlags)(flags)
 	call := C.igDragInt4(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DragIntRange2(label string, vCurrentMin *int, vCurrentMax *int, vSpeed float32, vMin int, vMax int, format string, formatMax string, flags SliderFlags) bool {
@@ -1227,8 +1166,7 @@ func DragIntRange2(label string, vCurrentMin *int, vCurrentMax *int, vSpeed floa
 	a7 := stringPool.StoreCString(formatMax)
 	a8 := (C.ImGuiSliderFlags)(flags)
 	call := C.igDragIntRange2(a0, a1, a2, a3, a4, a5, a6, a7, a8)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DragScalar(label string, dataType DataType, pData unsafe.Pointer, vSpeed float32, pMin unsafe.Pointer, pMax unsafe.Pointer, format string, flags SliderFlags) bool {
@@ -1241,8 +1179,7 @@ func DragScalar(label string, dataType DataType, pData unsafe.Pointer, vSpeed fl
 	a6 := stringPool.StoreCString(format)
 	a7 := (C.ImGuiSliderFlags)(flags)
 	call := C.igDragScalar(a0, a1, a2, a3, a4, a5, a6, a7)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func DragScalarN(label string, dataType DataType, pData unsafe.Pointer, components int, vSpeed float32, pMin unsafe.Pointer, pMax unsafe.Pointer, format string, flags SliderFlags) bool {
@@ -1256,8 +1193,7 @@ func DragScalarN(label string, dataType DataType, pData unsafe.Pointer, componen
 	a7 := stringPool.StoreCString(format)
 	a8 := (C.ImGuiSliderFlags)(flags)
 	call := C.igDragScalarN(a0, a1, a2, a3, a4, a5, a6, a7, a8)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func Dummy(size mgl32.Vec2) {
@@ -1337,8 +1273,7 @@ func EndMenuBar() {
 
 func EndMultiSelect() *MultiSelectIO {
 	call := C.igEndMultiSelect()
-	r := (*MultiSelectIO)(call)
-	return r
+	return (*MultiSelectIO)(call)
 }
 
 func EndPopup() {
@@ -1372,8 +1307,7 @@ func ErrorCheckUsingSetCursorPosToExtendParentBoundaries() {
 func ErrorLog(msg string) bool {
 	a0 := stringPool.StoreCString(msg)
 	call := C.igErrorLog(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ErrorRecoveryStoreState(stateOut *ErrorRecoveryState) {
@@ -1391,42 +1325,53 @@ func ErrorRecoveryTryToRecoverWindowState(stateIn *ErrorRecoveryState) {
 	C.igErrorRecoveryTryToRecoverWindowState(a0)
 }
 
-func FindBestWindowPosForPopup(pOut *mgl32.Vec2, window *Window) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	a1 := (*C.ImGuiWindow)(unsafe.Pointer(window))
-	C.igFindBestWindowPosForPopup(a0, a1)
+func ExtendHitBoxWhenNearViewportEdge(window *Window, bb *Rect, threshold float32, axis Axis) {
+	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
+	a1 := (*C.ImRect)(unsafe.Pointer(bb))
+	a2 := (C.float)(threshold)
+	a3 := (C.ImGuiAxis)(axis)
+	C.igExtendHitBoxWhenNearViewportEdge(a0, a1, a2, a3)
 }
 
-func FindBestWindowPosForPopupEx(pOut *mgl32.Vec2, refPos mgl32.Vec2, size mgl32.Vec2, lastDir *Dir, rOuter Rect, rAvoid Rect, policy PopupPositionPolicy) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	a1 := mglVec2ToImVec2(refPos)
-	a2 := mglVec2ToImVec2(size)
-	a3 := (*C.ImGuiDir)(unsafe.Pointer(lastDir))
-	a4 := (C.ImRect)(rOuter)
-	a5 := (C.ImRect)(rAvoid)
-	a6 := (C.ImGuiPopupPositionPolicy)(policy)
-	C.igFindBestWindowPosForPopupEx(a0, a1, a2, a3, a4, a5, a6)
+func FindBestWindowPosForPopup(window *Window) mgl32.Vec2 {
+	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
+	call := C.igFindBestWindowPosForPopup(a0)
+	return imVec2ToMglVec2(call)
+}
+
+func FindBestWindowPosForPopupEx(refPos mgl32.Vec2, size mgl32.Vec2, lastDir *Dir, rOuter Rect, rAvoid Rect, policy PopupPositionPolicy) mgl32.Vec2 {
+	a0 := mglVec2ToImVec2(refPos)
+	a1 := mglVec2ToImVec2(size)
+	a2 := (*C.ImGuiDir)(unsafe.Pointer(lastDir))
+	a3 := (C.ImRect)(rOuter)
+	a4 := (C.ImRect)(rAvoid)
+	a5 := (C.ImGuiPopupPositionPolicy)(policy)
+	call := C.igFindBestWindowPosForPopupEx(a0, a1, a2, a3, a4, a5)
+	return imVec2ToMglVec2(call)
 }
 
 func FindBlockingModal(window *Window) *Window {
 	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
 	call := C.igFindBlockingModal(a0)
-	r := (*Window)(call)
-	return r
+	return (*Window)(call)
 }
 
 func FindBottomMostVisibleWindowWithinBeginStack(window *Window) *Window {
 	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
 	call := C.igFindBottomMostVisibleWindowWithinBeginStack(a0)
-	r := (*Window)(call)
-	return r
+	return (*Window)(call)
+}
+
+func FindFrontMostVisibleChildWindow(window *Window) *Window {
+	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
+	call := C.igFindFrontMostVisibleChildWindow(a0)
+	return (*Window)(call)
 }
 
 func FindHoveredViewportFromPlatformWindowStack(mousePlatformPos mgl32.Vec2) *ViewportP {
 	a0 := mglVec2ToImVec2(mousePlatformPos)
 	call := C.igFindHoveredViewportFromPlatformWindowStack(a0)
-	r := (*ViewportP)(call)
-	return r
+	return (*ViewportP)(call)
 }
 
 func FindHoveredWindowEx(pos mgl32.Vec2, findFirstAndInAnyViewport bool, outHoveredWindow **Window, outHoveredWindowUnderMovingWindow **Window) {
@@ -1441,79 +1386,68 @@ func FindOrCreateColumns(window *Window, id ID) *OldColumns {
 	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
 	a1 := (C.ImGuiID)(id)
 	call := C.igFindOrCreateColumns(a0, a1)
-	r := (*OldColumns)(call)
-	return r
+	return (*OldColumns)(call)
 }
 
 func FindRenderedTextEnd(text string, textEnd string) string {
 	a0 := stringPool.StoreCString(text)
 	a1 := stringPool.StoreCString(textEnd)
 	call := C.igFindRenderedTextEnd(a0, a1)
-	r := C.GoString(call)
-	return r
+	return C.GoString(call)
 }
 
 func FindSettingsHandler(typeName string) *SettingsHandler {
 	a0 := stringPool.StoreCString(typeName)
 	call := C.igFindSettingsHandler(a0)
-	r := (*SettingsHandler)(call)
-	return r
+	return (*SettingsHandler)(call)
 }
 
-func FindViewportByID(id ID) *Viewport {
-	a0 := (C.ImGuiID)(id)
+func FindViewportByID(viewportId ID) *Viewport {
+	a0 := (C.ImGuiID)(viewportId)
 	call := C.igFindViewportByID(a0)
-	r := (*Viewport)(call)
-	return r
+	return (*Viewport)(call)
 }
 
 func FindViewportByPlatformHandle(platformHandle unsafe.Pointer) *Viewport {
 	a0 := (unsafe.Pointer)(platformHandle)
 	call := C.igFindViewportByPlatformHandle(a0)
-	r := (*Viewport)(call)
-	return r
+	return (*Viewport)(call)
 }
 
 func FindWindowByID(id ID) *Window {
 	a0 := (C.ImGuiID)(id)
 	call := C.igFindWindowByID(a0)
-	r := (*Window)(call)
-	return r
+	return (*Window)(call)
 }
 
 func FindWindowByName(name string) *Window {
 	a0 := stringPool.StoreCString(name)
 	call := C.igFindWindowByName(a0)
-	r := (*Window)(call)
-	return r
+	return (*Window)(call)
 }
 
 func FindWindowDisplayIndex(window *Window) int {
 	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
 	call := C.igFindWindowDisplayIndex(a0)
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
 func FindWindowSettingsByID(id ID) *WindowSettings {
 	a0 := (C.ImGuiID)(id)
 	call := C.igFindWindowSettingsByID(a0)
-	r := (*WindowSettings)(call)
-	return r
+	return (*WindowSettings)(call)
 }
 
 func FindWindowSettingsByWindow(window *Window) *WindowSettings {
 	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
 	call := C.igFindWindowSettingsByWindow(a0)
-	r := (*WindowSettings)(call)
-	return r
+	return (*WindowSettings)(call)
 }
 
 func FixupKeyChord(keyChord KeyChord) KeyChord {
 	a0 := (C.ImGuiKeyChord)(keyChord)
 	call := C.igFixupKeyChord(a0)
-	r := (KeyChord)(call)
-	return r
+	return (KeyChord)(call)
 }
 
 func FocusItem() {
@@ -1550,262 +1484,236 @@ func GcCompactTransientWindowBuffers(window *Window) {
 
 func GetActiveID() ID {
 	call := C.igGetActiveID()
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func GetBackgroundDrawList(viewport *Viewport) *DrawList {
 	a0 := (*C.ImGuiViewport)(unsafe.Pointer(viewport))
 	call := C.igGetBackgroundDrawList(a0)
-	r := (*DrawList)(call)
-	return r
+	return (*DrawList)(call)
 }
 
 func GetBoxSelectState(id ID) *BoxSelectState {
 	a0 := (C.ImGuiID)(id)
 	call := C.igGetBoxSelectState(a0)
-	r := (*BoxSelectState)(call)
-	return r
+	return (*BoxSelectState)(call)
 }
 
 func GetClipboardText() string {
 	call := C.igGetClipboardText()
-	r := C.GoString(call)
-	return r
+	return C.GoString(call)
 }
 
 func GetColorU32_Col(idx Col, alphaMul float32) U32 {
 	a0 := (C.ImGuiCol)(idx)
 	a1 := (C.float)(alphaMul)
 	call := C.igGetColorU32_Col(a0, a1)
-	r := (U32)(call)
-	return r
+	return (U32)(call)
 }
 
 func GetColorU32_U32(col U32, alphaMul float32) U32 {
 	a0 := (C.ImU32)(col)
 	a1 := (C.float)(alphaMul)
 	call := C.igGetColorU32_U32(a0, a1)
-	r := (U32)(call)
-	return r
+	return (U32)(call)
 }
 
 func GetColorU32_Vec4(col mgl32.Vec4) U32 {
 	a0 := mglVec4ToImVec4(col)
 	call := C.igGetColorU32_Vec4(a0)
-	r := (U32)(call)
-	return r
+	return (U32)(call)
 }
 
 func GetColumnIndex() int {
 	call := C.igGetColumnIndex()
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
 func GetColumnNormFromOffset(columns *OldColumns, offset float32) float32 {
 	a0 := (*C.ImGuiOldColumns)(unsafe.Pointer(columns))
 	a1 := (C.float)(offset)
 	call := C.igGetColumnNormFromOffset(a0, a1)
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetColumnOffset(columnIndex int) float32 {
 	a0 := (C.int)(columnIndex)
 	call := C.igGetColumnOffset(a0)
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetColumnOffsetFromNorm(columns *OldColumns, offsetNorm float32) float32 {
 	a0 := (*C.ImGuiOldColumns)(unsafe.Pointer(columns))
 	a1 := (C.float)(offsetNorm)
 	call := C.igGetColumnOffsetFromNorm(a0, a1)
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetColumnWidth(columnIndex int) float32 {
 	a0 := (C.int)(columnIndex)
 	call := C.igGetColumnWidth(a0)
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetColumnsCount() int {
 	call := C.igGetColumnsCount()
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
 func GetColumnsID(strId string, count int) ID {
 	a0 := stringPool.StoreCString(strId)
 	a1 := (C.int)(count)
 	call := C.igGetColumnsID(a0, a1)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
-func GetContentRegionAvail(pOut *mgl32.Vec2) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	C.igGetContentRegionAvail(a0)
+func GetContentRegionAvail() mgl32.Vec2 {
+	call := C.igGetContentRegionAvail()
+	return imVec2ToMglVec2(call)
 }
 
 func GetCurrentContext() *Context {
 	call := C.igGetCurrentContext()
-	r := (*Context)(call)
-	return r
+	return (*Context)(call)
 }
 
 func GetCurrentFocusScope() ID {
 	call := C.igGetCurrentFocusScope()
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func GetCurrentTabBar() *TabBar {
 	call := C.igGetCurrentTabBar()
-	r := (*TabBar)(call)
-	return r
+	return (*TabBar)(call)
 }
 
 func GetCurrentTable() *Table {
 	call := C.igGetCurrentTable()
-	r := (*Table)(call)
-	return r
+	return (*Table)(call)
 }
 
 func GetCurrentWindow() *Window {
 	call := C.igGetCurrentWindow()
-	r := (*Window)(call)
-	return r
+	return (*Window)(call)
 }
 
 func GetCurrentWindowRead() *Window {
 	call := C.igGetCurrentWindowRead()
-	r := (*Window)(call)
-	return r
+	return (*Window)(call)
 }
 
-func GetCursorPos(pOut *mgl32.Vec2) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	C.igGetCursorPos(a0)
+func GetCursorPos() mgl32.Vec2 {
+	call := C.igGetCursorPos()
+	return imVec2ToMglVec2(call)
 }
 
 func GetCursorPosX() float32 {
 	call := C.igGetCursorPosX()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetCursorPosY() float32 {
 	call := C.igGetCursorPosY()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
-func GetCursorScreenPos(pOut *mgl32.Vec2) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	C.igGetCursorScreenPos(a0)
+func GetCursorScreenPos() mgl32.Vec2 {
+	call := C.igGetCursorScreenPos()
+	return imVec2ToMglVec2(call)
 }
 
-func GetCursorStartPos(pOut *mgl32.Vec2) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	C.igGetCursorStartPos(a0)
+func GetCursorStartPos() mgl32.Vec2 {
+	call := C.igGetCursorStartPos()
+	return imVec2ToMglVec2(call)
 }
 
 func GetDefaultFont() *Font {
 	call := C.igGetDefaultFont()
-	r := (*Font)(call)
-	return r
+	return (*Font)(call)
 }
 
 func GetDragDropPayload() *Payload {
 	call := C.igGetDragDropPayload()
-	r := (*Payload)(call)
-	return r
+	return (*Payload)(call)
 }
 
 func GetDrawData() *DrawData {
 	call := C.igGetDrawData()
-	r := (*DrawData)(call)
-	return r
+	return (*DrawData)(call)
 }
 
 func GetDrawListSharedData() *DrawListSharedData {
 	call := C.igGetDrawListSharedData()
-	r := (*DrawListSharedData)(call)
-	return r
+	return (*DrawListSharedData)(call)
 }
 
 func GetFocusID() ID {
 	call := C.igGetFocusID()
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func GetFont() *Font {
 	call := C.igGetFont()
-	r := (*Font)(call)
-	return r
+	return (*Font)(call)
+}
+
+func GetFontBaked() *FontBaked {
+	call := C.igGetFontBaked()
+	return (*FontBaked)(call)
+}
+
+func GetFontRasterizerDensity() float32 {
+	call := C.igGetFontRasterizerDensity()
+	return (float32)(call)
 }
 
 func GetFontSize() float32 {
 	call := C.igGetFontSize()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
-func GetFontTexUvWhitePixel(pOut *mgl32.Vec2) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	C.igGetFontTexUvWhitePixel(a0)
+func GetFontTexUvWhitePixel() mgl32.Vec2 {
+	call := C.igGetFontTexUvWhitePixel()
+	return imVec2ToMglVec2(call)
 }
 
 func GetForegroundDrawList_ViewportPtr(viewport *Viewport) *DrawList {
 	a0 := (*C.ImGuiViewport)(unsafe.Pointer(viewport))
 	call := C.igGetForegroundDrawList_ViewportPtr(a0)
-	r := (*DrawList)(call)
-	return r
+	return (*DrawList)(call)
 }
 
 func GetForegroundDrawList_WindowPtr(window *Window) *DrawList {
 	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
 	call := C.igGetForegroundDrawList_WindowPtr(a0)
-	r := (*DrawList)(call)
-	return r
+	return (*DrawList)(call)
 }
 
 func GetFrameCount() int {
 	call := C.igGetFrameCount()
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
 func GetFrameHeight() float32 {
 	call := C.igGetFrameHeight()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetFrameHeightWithSpacing() float32 {
 	call := C.igGetFrameHeightWithSpacing()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetHoveredID() ID {
 	call := C.igGetHoveredID()
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func GetIDWithSeed_Int(n int, seed ID) ID {
 	a0 := (C.int)(n)
 	a1 := (C.ImGuiID)(seed)
 	call := C.igGetIDWithSeed_Int(a0, a1)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func GetIDWithSeed_Str(strIdBegin string, strIdEnd string, seed ID) ID {
@@ -1813,136 +1721,126 @@ func GetIDWithSeed_Str(strIdBegin string, strIdEnd string, seed ID) ID {
 	a1 := stringPool.StoreCString(strIdEnd)
 	a2 := (C.ImGuiID)(seed)
 	call := C.igGetIDWithSeed_Str(a0, a1, a2)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func GetID_Int(intId int) ID {
 	a0 := (C.int)(intId)
 	call := C.igGetID_Int(a0)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func GetID_Ptr(ptrId unsafe.Pointer) ID {
 	a0 := (unsafe.Pointer)(ptrId)
 	call := C.igGetID_Ptr(a0)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func GetID_Str(strId string) ID {
 	a0 := stringPool.StoreCString(strId)
 	call := C.igGetID_Str(a0)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func GetID_StrStr(strIdBegin string, strIdEnd string) ID {
 	a0 := stringPool.StoreCString(strIdBegin)
 	a1 := stringPool.StoreCString(strIdEnd)
 	call := C.igGetID_StrStr(a0, a1)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
-func GetIO() *IO {
-	call := C.igGetIO()
-	r := (*IO)(call)
-	return r
+func GetIO_ContextPtr(ctx *Context) *IO {
+	a0 := (*C.ImGuiContext)(unsafe.Pointer(ctx))
+	call := C.igGetIO_ContextPtr(a0)
+	return (*IO)(call)
+}
+
+func GetIO_Nil() *IO {
+	call := C.igGetIO_Nil()
+	return (*IO)(call)
 }
 
 func GetInputTextState(id ID) *InputTextState {
 	a0 := (C.ImGuiID)(id)
 	call := C.igGetInputTextState(a0)
-	r := (*InputTextState)(call)
-	return r
+	return (*InputTextState)(call)
 }
 
 func GetItemFlags() ItemFlags {
 	call := C.igGetItemFlags()
-	r := (ItemFlags)(call)
-	return r
+	return (ItemFlags)(call)
 }
 
 func GetItemID() ID {
 	call := C.igGetItemID()
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
-func GetItemRectMax(pOut *mgl32.Vec2) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	C.igGetItemRectMax(a0)
+func GetItemRectMax() mgl32.Vec2 {
+	call := C.igGetItemRectMax()
+	return imVec2ToMglVec2(call)
 }
 
-func GetItemRectMin(pOut *mgl32.Vec2) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	C.igGetItemRectMin(a0)
+func GetItemRectMin() mgl32.Vec2 {
+	call := C.igGetItemRectMin()
+	return imVec2ToMglVec2(call)
 }
 
-func GetItemRectSize(pOut *mgl32.Vec2) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	C.igGetItemRectSize(a0)
+func GetItemRectSize() mgl32.Vec2 {
+	call := C.igGetItemRectSize()
+	return imVec2ToMglVec2(call)
 }
 
 func GetItemStatusFlags() ItemStatusFlags {
 	call := C.igGetItemStatusFlags()
-	r := (ItemStatusFlags)(call)
-	return r
+	return (ItemStatusFlags)(call)
 }
 
 func GetKeyChordName(keyChord KeyChord) string {
 	a0 := (C.ImGuiKeyChord)(keyChord)
 	call := C.igGetKeyChordName(a0)
-	r := C.GoString(call)
-	return r
+	return C.GoString(call)
 }
 
 func GetKeyData_ContextPtr(ctx *Context, key Key) *KeyData {
 	a0 := (*C.ImGuiContext)(unsafe.Pointer(ctx))
 	a1 := (C.ImGuiKey)(key)
 	call := C.igGetKeyData_ContextPtr(a0, a1)
-	r := (*KeyData)(call)
-	return r
+	return (*KeyData)(call)
 }
 
 func GetKeyData_Key(key Key) *KeyData {
 	a0 := (C.ImGuiKey)(key)
 	call := C.igGetKeyData_Key(a0)
-	r := (*KeyData)(call)
-	return r
+	return (*KeyData)(call)
 }
 
-func GetKeyMagnitude2d(pOut *mgl32.Vec2, keyLeft Key, keyRight Key, keyUp Key, keyDown Key) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	a1 := (C.ImGuiKey)(keyLeft)
-	a2 := (C.ImGuiKey)(keyRight)
-	a3 := (C.ImGuiKey)(keyUp)
-	a4 := (C.ImGuiKey)(keyDown)
-	C.igGetKeyMagnitude2d(a0, a1, a2, a3, a4)
+func GetKeyMagnitude2d(keyLeft Key, keyRight Key, keyUp Key, keyDown Key) mgl32.Vec2 {
+	a0 := (C.ImGuiKey)(keyLeft)
+	a1 := (C.ImGuiKey)(keyRight)
+	a2 := (C.ImGuiKey)(keyUp)
+	a3 := (C.ImGuiKey)(keyDown)
+	call := C.igGetKeyMagnitude2d(a0, a1, a2, a3)
+	return imVec2ToMglVec2(call)
 }
 
 func GetKeyName(key Key) string {
 	a0 := (C.ImGuiKey)(key)
 	call := C.igGetKeyName(a0)
-	r := C.GoString(call)
-	return r
+	return C.GoString(call)
 }
 
 func GetKeyOwner(key Key) ID {
 	a0 := (C.ImGuiKey)(key)
 	call := C.igGetKeyOwner(a0)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func GetKeyOwnerData(ctx *Context, key Key) *KeyOwnerData {
 	a0 := (*C.ImGuiContext)(unsafe.Pointer(ctx))
 	a1 := (C.ImGuiKey)(key)
 	call := C.igGetKeyOwnerData(a0, a1)
-	r := (*KeyOwnerData)(call)
-	return r
+	return (*KeyOwnerData)(call)
 }
 
 func GetKeyPressedAmount(key Key, repeatDelay float32, rate float32) int {
@@ -1950,170 +1848,170 @@ func GetKeyPressedAmount(key Key, repeatDelay float32, rate float32) int {
 	a1 := (C.float)(repeatDelay)
 	a2 := (C.float)(rate)
 	call := C.igGetKeyPressedAmount(a0, a1, a2)
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
 func GetMainViewport() *Viewport {
 	call := C.igGetMainViewport()
-	r := (*Viewport)(call)
-	return r
+	return (*Viewport)(call)
+}
+
+func GetMouseButtonFromPopupFlags(flags PopupFlags) MouseButton {
+	a0 := (C.ImGuiPopupFlags)(flags)
+	call := C.igGetMouseButtonFromPopupFlags(a0)
+	return (MouseButton)(call)
 }
 
 func GetMouseClickedCount(button MouseButton) int {
 	a0 := (C.ImGuiMouseButton)(button)
 	call := C.igGetMouseClickedCount(a0)
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
 func GetMouseCursor() MouseCursor {
 	call := C.igGetMouseCursor()
-	r := (MouseCursor)(call)
-	return r
+	return (MouseCursor)(call)
 }
 
-func GetMouseDragDelta(pOut *mgl32.Vec2, button MouseButton, lockThreshold float32) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	a1 := (C.ImGuiMouseButton)(button)
-	a2 := (C.float)(lockThreshold)
-	C.igGetMouseDragDelta(a0, a1, a2)
+func GetMouseDragDelta(button MouseButton, lockThreshold float32) mgl32.Vec2 {
+	a0 := (C.ImGuiMouseButton)(button)
+	a1 := (C.float)(lockThreshold)
+	call := C.igGetMouseDragDelta(a0, a1)
+	return imVec2ToMglVec2(call)
 }
 
-func GetMousePos(pOut *mgl32.Vec2) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	C.igGetMousePos(a0)
+func GetMousePos() mgl32.Vec2 {
+	call := C.igGetMousePos()
+	return imVec2ToMglVec2(call)
 }
 
-func GetMousePosOnOpeningCurrentPopup(pOut *mgl32.Vec2) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	C.igGetMousePosOnOpeningCurrentPopup(a0)
+func GetMousePosOnOpeningCurrentPopup() mgl32.Vec2 {
+	call := C.igGetMousePosOnOpeningCurrentPopup()
+	return imVec2ToMglVec2(call)
 }
 
 func GetMultiSelectState(id ID) *MultiSelectState {
 	a0 := (C.ImGuiID)(id)
 	call := C.igGetMultiSelectState(a0)
-	r := (*MultiSelectState)(call)
-	return r
+	return (*MultiSelectState)(call)
 }
 
 func GetNavTweakPressedAmount(axis Axis) float32 {
 	a0 := (C.ImGuiAxis)(axis)
 	call := C.igGetNavTweakPressedAmount(a0)
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
-func GetPlatformIO() *PlatformIO {
-	call := C.igGetPlatformIO()
-	r := (*PlatformIO)(call)
-	return r
+func GetPlatformIO_ContextPtr(ctx *Context) *PlatformIO {
+	a0 := (*C.ImGuiContext)(unsafe.Pointer(ctx))
+	call := C.igGetPlatformIO_ContextPtr(a0)
+	return (*PlatformIO)(call)
 }
 
-func GetPopupAllowedExtentRect(pOut *Rect, window *Window) {
-	a0 := (*C.ImRect)(unsafe.Pointer(pOut))
-	a1 := (*C.ImGuiWindow)(unsafe.Pointer(window))
-	C.igGetPopupAllowedExtentRect(a0, a1)
+func GetPlatformIO_Nil() *PlatformIO {
+	call := C.igGetPlatformIO_Nil()
+	return (*PlatformIO)(call)
+}
+
+func GetPopupAllowedExtentRect(window *Window) Rect {
+	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
+	call := C.igGetPopupAllowedExtentRect(a0)
+	return (Rect)(call)
+}
+
+func GetRoundedFontSize(size float32) float32 {
+	a0 := (C.float)(size)
+	call := C.igGetRoundedFontSize(a0)
+	return (float32)(call)
+}
+
+func GetScale() float32 {
+	call := C.igGetScale()
+	return (float32)(call)
 }
 
 func GetScrollMaxX() float32 {
 	call := C.igGetScrollMaxX()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetScrollMaxY() float32 {
 	call := C.igGetScrollMaxY()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetScrollX() float32 {
 	call := C.igGetScrollX()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetScrollY() float32 {
 	call := C.igGetScrollY()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetShortcutRoutingData(keyChord KeyChord) *KeyRoutingData {
 	a0 := (C.ImGuiKeyChord)(keyChord)
 	call := C.igGetShortcutRoutingData(a0)
-	r := (*KeyRoutingData)(call)
-	return r
+	return (*KeyRoutingData)(call)
 }
 
 func GetStateStorage() *Storage {
 	call := C.igGetStateStorage()
-	r := (*Storage)(call)
-	return r
+	return (*Storage)(call)
 }
 
 func GetStyle() *Style {
 	call := C.igGetStyle()
-	r := (*Style)(call)
-	return r
+	return (*Style)(call)
 }
 
 func GetStyleColorName(idx Col) string {
 	a0 := (C.ImGuiCol)(idx)
 	call := C.igGetStyleColorName(a0)
-	r := C.GoString(call)
-	return r
+	return C.GoString(call)
 }
 
 func GetStyleColorVec4(idx Col) *mgl32.Vec4 {
 	a0 := (C.ImGuiCol)(idx)
 	call := C.igGetStyleColorVec4(a0)
-	r := (*mgl32.Vec4)(unsafe.Pointer(call))
-	return r
+	return (*mgl32.Vec4)(unsafe.Pointer(call))
 }
 
-func GetStyleVarInfo(idx StyleVar) *DataVarInfo {
+func GetStyleVarInfo(idx StyleVar) *StyleVarInfo {
 	a0 := (C.ImGuiStyleVar)(idx)
 	call := C.igGetStyleVarInfo(a0)
-	r := (*DataVarInfo)(call)
-	return r
+	return (*StyleVarInfo)(call)
 }
 
 func GetTextLineHeight() float32 {
 	call := C.igGetTextLineHeight()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetTextLineHeightWithSpacing() float32 {
 	call := C.igGetTextLineHeightWithSpacing()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetTime() float64 {
 	call := C.igGetTime()
-	r := (float64)(call)
-	return r
+	return (float64)(call)
 }
 
 func GetTopMostAndVisiblePopupModal() *Window {
 	call := C.igGetTopMostAndVisiblePopupModal()
-	r := (*Window)(call)
-	return r
+	return (*Window)(call)
 }
 
 func GetTopMostPopupModal() *Window {
 	call := C.igGetTopMostPopupModal()
-	r := (*Window)(call)
-	return r
+	return (*Window)(call)
 }
 
 func GetTreeNodeToLabelSpacing() float32 {
 	call := C.igGetTreeNodeToLabelSpacing()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetTypematicRepeatRate(flags InputFlags, repeatDelay *float32, repeatRate *float32) {
@@ -2126,111 +2024,97 @@ func GetTypematicRepeatRate(flags InputFlags, repeatDelay *float32, repeatRate *
 func GetTypingSelectRequest(flags TypingSelectFlags) *TypingSelectRequest {
 	a0 := (C.ImGuiTypingSelectFlags)(flags)
 	call := C.igGetTypingSelectRequest(a0)
-	r := (*TypingSelectRequest)(call)
-	return r
+	return (*TypingSelectRequest)(call)
 }
 
 func GetVersion() string {
 	call := C.igGetVersion()
-	r := C.GoString(call)
-	return r
+	return C.GoString(call)
 }
 
 func GetViewportPlatformMonitor(viewport *Viewport) *PlatformMonitor {
 	a0 := (*C.ImGuiViewport)(unsafe.Pointer(viewport))
 	call := C.igGetViewportPlatformMonitor(a0)
-	r := (*PlatformMonitor)(call)
-	return r
+	return (*PlatformMonitor)(call)
 }
 
 func GetWindowAlwaysWantOwnTabBar(window *Window) bool {
 	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
 	call := C.igGetWindowAlwaysWantOwnTabBar(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func GetWindowDockID() ID {
 	call := C.igGetWindowDockID()
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func GetWindowDockNode() *DockNode {
 	call := C.igGetWindowDockNode()
-	r := (*DockNode)(call)
-	return r
+	return (*DockNode)(call)
 }
 
 func GetWindowDpiScale() float32 {
 	call := C.igGetWindowDpiScale()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func GetWindowDrawList() *DrawList {
 	call := C.igGetWindowDrawList()
-	r := (*DrawList)(call)
-	return r
+	return (*DrawList)(call)
 }
 
 func GetWindowHeight() float32 {
 	call := C.igGetWindowHeight()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
-func GetWindowPos(pOut *mgl32.Vec2) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	C.igGetWindowPos(a0)
+func GetWindowPos() mgl32.Vec2 {
+	call := C.igGetWindowPos()
+	return imVec2ToMglVec2(call)
 }
 
 func GetWindowResizeBorderID(window *Window, dir Dir) ID {
 	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
 	a1 := (C.ImGuiDir)(dir)
 	call := C.igGetWindowResizeBorderID(a0, a1)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func GetWindowResizeCornerID(window *Window, n int) ID {
 	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
 	a1 := (C.int)(n)
 	call := C.igGetWindowResizeCornerID(a0, a1)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func GetWindowScrollbarID(window *Window, axis Axis) ID {
 	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
 	a1 := (C.ImGuiAxis)(axis)
 	call := C.igGetWindowScrollbarID(a0, a1)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
-func GetWindowScrollbarRect(pOut *Rect, window *Window, axis Axis) {
-	a0 := (*C.ImRect)(unsafe.Pointer(pOut))
-	a1 := (*C.ImGuiWindow)(unsafe.Pointer(window))
-	a2 := (C.ImGuiAxis)(axis)
-	C.igGetWindowScrollbarRect(a0, a1, a2)
+func GetWindowScrollbarRect(window *Window, axis Axis) Rect {
+	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
+	a1 := (C.ImGuiAxis)(axis)
+	call := C.igGetWindowScrollbarRect(a0, a1)
+	return (Rect)(call)
 }
 
-func GetWindowSize(pOut *mgl32.Vec2) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	C.igGetWindowSize(a0)
+func GetWindowSize() mgl32.Vec2 {
+	call := C.igGetWindowSize()
+	return imVec2ToMglVec2(call)
 }
 
 func GetWindowViewport() *Viewport {
 	call := C.igGetWindowViewport()
-	r := (*Viewport)(call)
-	return r
+	return (*Viewport)(call)
 }
 
 func GetWindowWidth() float32 {
 	call := C.igGetWindowWidth()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func Indent(indentW float32) {
@@ -2250,8 +2134,7 @@ func InputDouble(label string, v *float64, step float64, stepFast float64, forma
 	a4 := stringPool.StoreCString(format)
 	a5 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputDouble(a0, a1, a2, a3, a4, a5)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func InputFloat(label string, v *float32, step float32, stepFast float32, format string, flags InputTextFlags) bool {
@@ -2262,8 +2145,7 @@ func InputFloat(label string, v *float32, step float32, stepFast float32, format
 	a4 := stringPool.StoreCString(format)
 	a5 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputFloat(a0, a1, a2, a3, a4, a5)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func InputFloat2(label string, v [2]float32, format string, flags InputTextFlags) bool {
@@ -2272,8 +2154,7 @@ func InputFloat2(label string, v [2]float32, format string, flags InputTextFlags
 	a2 := stringPool.StoreCString(format)
 	a3 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputFloat2(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func InputFloat3(label string, v *mgl32.Vec3, format string, flags InputTextFlags) bool {
@@ -2282,8 +2163,7 @@ func InputFloat3(label string, v *mgl32.Vec3, format string, flags InputTextFlag
 	a2 := stringPool.StoreCString(format)
 	a3 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputFloat3(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func InputFloat4(label string, v *mgl32.Vec4, format string, flags InputTextFlags) bool {
@@ -2292,8 +2172,7 @@ func InputFloat4(label string, v *mgl32.Vec4, format string, flags InputTextFlag
 	a2 := stringPool.StoreCString(format)
 	a3 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputFloat4(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func InputInt(label string, v *int, step int, stepFast int, flags InputTextFlags) bool {
@@ -2303,8 +2182,7 @@ func InputInt(label string, v *int, step int, stepFast int, flags InputTextFlags
 	a3 := (C.int)(stepFast)
 	a4 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputInt(a0, a1, a2, a3, a4)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func InputInt2(label string, v [2]int, flags InputTextFlags) bool {
@@ -2312,8 +2190,7 @@ func InputInt2(label string, v [2]int, flags InputTextFlags) bool {
 	a1 := (*C.int)(unsafe.Pointer(&v[0]))
 	a2 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputInt2(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func InputInt3(label string, v [3]int, flags InputTextFlags) bool {
@@ -2321,8 +2198,7 @@ func InputInt3(label string, v [3]int, flags InputTextFlags) bool {
 	a1 := (*C.int)(unsafe.Pointer(&v[0]))
 	a2 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputInt3(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func InputInt4(label string, v [4]int, flags InputTextFlags) bool {
@@ -2330,8 +2206,7 @@ func InputInt4(label string, v [4]int, flags InputTextFlags) bool {
 	a1 := (*C.int)(unsafe.Pointer(&v[0]))
 	a2 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputInt4(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func InputScalar(label string, dataType DataType, pData unsafe.Pointer, pStep unsafe.Pointer, pStepFast unsafe.Pointer, format string, flags InputTextFlags) bool {
@@ -2343,8 +2218,7 @@ func InputScalar(label string, dataType DataType, pData unsafe.Pointer, pStep un
 	a5 := stringPool.StoreCString(format)
 	a6 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputScalar(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func InputScalarN(label string, dataType DataType, pData unsafe.Pointer, components int, pStep unsafe.Pointer, pStepFast unsafe.Pointer, format string, flags InputTextFlags) bool {
@@ -2357,20 +2231,21 @@ func InputScalarN(label string, dataType DataType, pData unsafe.Pointer, compone
 	a6 := stringPool.StoreCString(format)
 	a7 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputScalarN(a0, a1, a2, a3, a4, a5, a6, a7)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
-func InputText(label string, buf string, bufSize uint, flags InputTextFlags, callback InputTextCallback, userData unsafe.Pointer) bool {
+func InputText(label string, buf []byte, flags InputTextFlags, callback InputTextCallback, userData unsafe.Pointer) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := stringPool.StoreCString(buf)
-	a2 := (C.size_t)(bufSize)
+	a1 := (*C.char)(nil)
+	if len(buf) > 0 {
+		a1 = (*C.char)(unsafe.Pointer(&buf[0]))
+	}
+	a2 := (C.size_t)(len(buf))
 	a3 := (C.ImGuiInputTextFlags)(flags)
 	a4 := (C.ImGuiInputTextCallback)(callback)
 	a5 := (unsafe.Pointer)(userData)
 	call := C.igInputText(a0, a1, a2, a3, a4, a5)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func InputTextDeactivateHook(id ID) {
@@ -2378,44 +2253,50 @@ func InputTextDeactivateHook(id ID) {
 	C.igInputTextDeactivateHook(a0)
 }
 
-func InputTextEx(label string, hint string, buf string, bufSize int, sizeArg mgl32.Vec2, flags InputTextFlags, callback InputTextCallback, userData unsafe.Pointer) bool {
+func InputTextEx(label string, hint string, buf []byte, sizeArg mgl32.Vec2, flags InputTextFlags, callback InputTextCallback, userData unsafe.Pointer) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := stringPool.StoreCString(hint)
-	a2 := stringPool.StoreCString(buf)
-	a3 := (C.int)(bufSize)
+	a2 := (*C.char)(nil)
+	if len(buf) > 0 {
+		a2 = (*C.char)(unsafe.Pointer(&buf[0]))
+	}
+	a3 := (C.int)(len(buf))
 	a4 := mglVec2ToImVec2(sizeArg)
 	a5 := (C.ImGuiInputTextFlags)(flags)
 	a6 := (C.ImGuiInputTextCallback)(callback)
 	a7 := (unsafe.Pointer)(userData)
 	call := C.igInputTextEx(a0, a1, a2, a3, a4, a5, a6, a7)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
-func InputTextMultiline(label string, buf string, bufSize uint, size mgl32.Vec2, flags InputTextFlags, callback InputTextCallback, userData unsafe.Pointer) bool {
+func InputTextMultiline(label string, buf []byte, size mgl32.Vec2, flags InputTextFlags, callback InputTextCallback, userData unsafe.Pointer) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := stringPool.StoreCString(buf)
-	a2 := (C.size_t)(bufSize)
+	a1 := (*C.char)(nil)
+	if len(buf) > 0 {
+		a1 = (*C.char)(unsafe.Pointer(&buf[0]))
+	}
+	a2 := (C.size_t)(len(buf))
 	a3 := mglVec2ToImVec2(size)
 	a4 := (C.ImGuiInputTextFlags)(flags)
 	a5 := (C.ImGuiInputTextCallback)(callback)
 	a6 := (unsafe.Pointer)(userData)
 	call := C.igInputTextMultiline(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
-func InputTextWithHint(label string, hint string, buf string, bufSize uint, flags InputTextFlags, callback InputTextCallback, userData unsafe.Pointer) bool {
+func InputTextWithHint(label string, hint string, buf []byte, flags InputTextFlags, callback InputTextCallback, userData unsafe.Pointer) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := stringPool.StoreCString(hint)
-	a2 := stringPool.StoreCString(buf)
-	a3 := (C.size_t)(bufSize)
+	a2 := (*C.char)(nil)
+	if len(buf) > 0 {
+		a2 = (*C.char)(unsafe.Pointer(&buf[0]))
+	}
+	a3 := (C.size_t)(len(buf))
 	a4 := (C.ImGuiInputTextFlags)(flags)
 	a5 := (C.ImGuiInputTextCallback)(callback)
 	a6 := (unsafe.Pointer)(userData)
 	call := C.igInputTextWithHint(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func InvisibleButton(strId string, size mgl32.Vec2, flags ButtonFlags) bool {
@@ -2423,141 +2304,130 @@ func InvisibleButton(strId string, size mgl32.Vec2, flags ButtonFlags) bool {
 	a1 := mglVec2ToImVec2(size)
 	a2 := (C.ImGuiButtonFlags)(flags)
 	call := C.igInvisibleButton(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsActiveIdUsingNavDir(dir Dir) bool {
 	a0 := (C.ImGuiDir)(dir)
 	call := C.igIsActiveIdUsingNavDir(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsAliasKey(key Key) bool {
 	a0 := (C.ImGuiKey)(key)
 	call := C.igIsAliasKey(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsAnyItemActive() bool {
 	call := C.igIsAnyItemActive()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsAnyItemFocused() bool {
 	call := C.igIsAnyItemFocused()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsAnyItemHovered() bool {
 	call := C.igIsAnyItemHovered()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsAnyMouseDown() bool {
 	call := C.igIsAnyMouseDown()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsClippedEx(bb Rect, id ID) bool {
 	a0 := (C.ImRect)(bb)
 	a1 := (C.ImGuiID)(id)
 	call := C.igIsClippedEx(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsDragDropActive() bool {
 	call := C.igIsDragDropActive()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsDragDropPayloadBeingAccepted() bool {
 	call := C.igIsDragDropPayloadBeingAccepted()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsGamepadKey(key Key) bool {
 	a0 := (C.ImGuiKey)(key)
 	call := C.igIsGamepadKey(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
+}
+
+func IsInNavFocusRoute(focusScopeId ID) bool {
+	a0 := (C.ImGuiID)(focusScopeId)
+	call := C.igIsInNavFocusRoute(a0)
+	return (bool)(call)
 }
 
 func IsItemActivated() bool {
 	call := C.igIsItemActivated()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsItemActive() bool {
 	call := C.igIsItemActive()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
+}
+
+func IsItemActiveAsInputText() bool {
+	call := C.igIsItemActiveAsInputText()
+	return (bool)(call)
 }
 
 func IsItemClicked(mouseButton MouseButton) bool {
 	a0 := (C.ImGuiMouseButton)(mouseButton)
 	call := C.igIsItemClicked(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsItemDeactivated() bool {
 	call := C.igIsItemDeactivated()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsItemDeactivatedAfterEdit() bool {
 	call := C.igIsItemDeactivatedAfterEdit()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsItemEdited() bool {
 	call := C.igIsItemEdited()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsItemFocused() bool {
 	call := C.igIsItemFocused()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsItemHovered(flags HoveredFlags) bool {
 	a0 := (C.ImGuiHoveredFlags)(flags)
 	call := C.igIsItemHovered(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsItemToggledOpen() bool {
 	call := C.igIsItemToggledOpen()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsItemToggledSelection() bool {
 	call := C.igIsItemToggledSelection()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsItemVisible() bool {
 	call := C.igIsItemVisible()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsKeyChordPressed_InputFlags(keyChord KeyChord, flags InputFlags, ownerId ID) bool {
@@ -2565,38 +2435,33 @@ func IsKeyChordPressed_InputFlags(keyChord KeyChord, flags InputFlags, ownerId I
 	a1 := (C.ImGuiInputFlags)(flags)
 	a2 := (C.ImGuiID)(ownerId)
 	call := C.igIsKeyChordPressed_InputFlags(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsKeyChordPressed_Nil(keyChord KeyChord) bool {
 	a0 := (C.ImGuiKeyChord)(keyChord)
 	call := C.igIsKeyChordPressed_Nil(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsKeyDown_ID(key Key, ownerId ID) bool {
 	a0 := (C.ImGuiKey)(key)
 	a1 := (C.ImGuiID)(ownerId)
 	call := C.igIsKeyDown_ID(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsKeyDown_Nil(key Key) bool {
 	a0 := (C.ImGuiKey)(key)
 	call := C.igIsKeyDown_Nil(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsKeyPressed_Bool(key Key, repeat bool) bool {
 	a0 := (C.ImGuiKey)(key)
 	a1 := (C.bool)(repeat)
 	call := C.igIsKeyPressed_Bool(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsKeyPressed_InputFlags(key Key, flags InputFlags, ownerId ID) bool {
@@ -2604,52 +2469,45 @@ func IsKeyPressed_InputFlags(key Key, flags InputFlags, ownerId ID) bool {
 	a1 := (C.ImGuiInputFlags)(flags)
 	a2 := (C.ImGuiID)(ownerId)
 	call := C.igIsKeyPressed_InputFlags(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsKeyReleased_ID(key Key, ownerId ID) bool {
 	a0 := (C.ImGuiKey)(key)
 	a1 := (C.ImGuiID)(ownerId)
 	call := C.igIsKeyReleased_ID(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsKeyReleased_Nil(key Key) bool {
 	a0 := (C.ImGuiKey)(key)
 	call := C.igIsKeyReleased_Nil(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsKeyboardKey(key Key) bool {
 	a0 := (C.ImGuiKey)(key)
 	call := C.igIsKeyboardKey(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsLRModKey(key Key) bool {
 	a0 := (C.ImGuiKey)(key)
 	call := C.igIsLRModKey(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsLegacyKey(key Key) bool {
 	a0 := (C.ImGuiKey)(key)
 	call := C.igIsLegacyKey(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsMouseClicked_Bool(button MouseButton, repeat bool) bool {
 	a0 := (C.ImGuiMouseButton)(button)
 	a1 := (C.bool)(repeat)
 	call := C.igIsMouseClicked_Bool(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsMouseClicked_InputFlags(button MouseButton, flags InputFlags, ownerId ID) bool {
@@ -2657,54 +2515,47 @@ func IsMouseClicked_InputFlags(button MouseButton, flags InputFlags, ownerId ID)
 	a1 := (C.ImGuiInputFlags)(flags)
 	a2 := (C.ImGuiID)(ownerId)
 	call := C.igIsMouseClicked_InputFlags(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsMouseDoubleClicked_ID(button MouseButton, ownerId ID) bool {
 	a0 := (C.ImGuiMouseButton)(button)
 	a1 := (C.ImGuiID)(ownerId)
 	call := C.igIsMouseDoubleClicked_ID(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsMouseDoubleClicked_Nil(button MouseButton) bool {
 	a0 := (C.ImGuiMouseButton)(button)
 	call := C.igIsMouseDoubleClicked_Nil(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsMouseDown_ID(button MouseButton, ownerId ID) bool {
 	a0 := (C.ImGuiMouseButton)(button)
 	a1 := (C.ImGuiID)(ownerId)
 	call := C.igIsMouseDown_ID(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsMouseDown_Nil(button MouseButton) bool {
 	a0 := (C.ImGuiMouseButton)(button)
 	call := C.igIsMouseDown_Nil(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsMouseDragPastThreshold(button MouseButton, lockThreshold float32) bool {
 	a0 := (C.ImGuiMouseButton)(button)
 	a1 := (C.float)(lockThreshold)
 	call := C.igIsMouseDragPastThreshold(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsMouseDragging(button MouseButton, lockThreshold float32) bool {
 	a0 := (C.ImGuiMouseButton)(button)
 	a1 := (C.float)(lockThreshold)
 	call := C.igIsMouseDragging(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsMouseHoveringRect(rMin mgl32.Vec2, rMax mgl32.Vec2, clip bool) bool {
@@ -2712,96 +2563,103 @@ func IsMouseHoveringRect(rMin mgl32.Vec2, rMax mgl32.Vec2, clip bool) bool {
 	a1 := mglVec2ToImVec2(rMax)
 	a2 := (C.bool)(clip)
 	call := C.igIsMouseHoveringRect(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsMouseKey(key Key) bool {
 	a0 := (C.ImGuiKey)(key)
 	call := C.igIsMouseKey(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsMousePosValid(mousePos *mgl32.Vec2) bool {
 	a0 := (*C.ImVec2)(unsafe.Pointer(&mousePos[0]))
 	call := C.igIsMousePosValid(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
+}
+
+func IsMouseReleasedWithDelay(button MouseButton, delay float32) bool {
+	a0 := (C.ImGuiMouseButton)(button)
+	a1 := (C.float)(delay)
+	call := C.igIsMouseReleasedWithDelay(a0, a1)
+	return (bool)(call)
 }
 
 func IsMouseReleased_ID(button MouseButton, ownerId ID) bool {
 	a0 := (C.ImGuiMouseButton)(button)
 	a1 := (C.ImGuiID)(ownerId)
 	call := C.igIsMouseReleased_ID(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsMouseReleased_Nil(button MouseButton) bool {
 	a0 := (C.ImGuiMouseButton)(button)
 	call := C.igIsMouseReleased_Nil(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsNamedKey(key Key) bool {
 	a0 := (C.ImGuiKey)(key)
 	call := C.igIsNamedKey(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsNamedKeyOrMod(key Key) bool {
 	a0 := (C.ImGuiKey)(key)
 	call := C.igIsNamedKeyOrMod(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
+}
+
+func IsPopupOpenRequestForItem(flags PopupFlags, id ID) bool {
+	a0 := (C.ImGuiPopupFlags)(flags)
+	a1 := (C.ImGuiID)(id)
+	call := C.igIsPopupOpenRequestForItem(a0, a1)
+	return (bool)(call)
+}
+
+func IsPopupOpenRequestForWindow(flags PopupFlags) bool {
+	a0 := (C.ImGuiPopupFlags)(flags)
+	call := C.igIsPopupOpenRequestForWindow(a0)
+	return (bool)(call)
 }
 
 func IsPopupOpen_ID(id ID, popupFlags PopupFlags) bool {
 	a0 := (C.ImGuiID)(id)
 	a1 := (C.ImGuiPopupFlags)(popupFlags)
 	call := C.igIsPopupOpen_ID(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsPopupOpen_Str(strId string, flags PopupFlags) bool {
 	a0 := stringPool.StoreCString(strId)
 	a1 := (C.ImGuiPopupFlags)(flags)
 	call := C.igIsPopupOpen_Str(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsRectVisible_Nil(size mgl32.Vec2) bool {
 	a0 := mglVec2ToImVec2(size)
 	call := C.igIsRectVisible_Nil(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsRectVisible_Vec2(rectMin mgl32.Vec2, rectMax mgl32.Vec2) bool {
 	a0 := mglVec2ToImVec2(rectMin)
 	a1 := mglVec2ToImVec2(rectMax)
 	call := C.igIsRectVisible_Vec2(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsWindowAbove(potentialAbove *Window, potentialBelow *Window) bool {
 	a0 := (*C.ImGuiWindow)(unsafe.Pointer(potentialAbove))
 	a1 := (*C.ImGuiWindow)(unsafe.Pointer(potentialBelow))
 	call := C.igIsWindowAbove(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsWindowAppearing() bool {
 	call := C.igIsWindowAppearing()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsWindowChildOf(window *Window, potentialParent *Window, popupHierarchy bool, dockHierarchy bool) bool {
@@ -2810,57 +2668,55 @@ func IsWindowChildOf(window *Window, potentialParent *Window, popupHierarchy boo
 	a2 := (C.bool)(popupHierarchy)
 	a3 := (C.bool)(dockHierarchy)
 	call := C.igIsWindowChildOf(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsWindowCollapsed() bool {
 	call := C.igIsWindowCollapsed()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsWindowContentHoverable(window *Window, flags HoveredFlags) bool {
 	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
 	a1 := (C.ImGuiHoveredFlags)(flags)
 	call := C.igIsWindowContentHoverable(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsWindowDocked() bool {
 	call := C.igIsWindowDocked()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsWindowFocused(flags FocusedFlags) bool {
 	a0 := (C.ImGuiFocusedFlags)(flags)
 	call := C.igIsWindowFocused(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsWindowHovered(flags HoveredFlags) bool {
 	a0 := (C.ImGuiHoveredFlags)(flags)
 	call := C.igIsWindowHovered(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
+}
+
+func IsWindowInBeginStack(window *Window) bool {
+	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
+	call := C.igIsWindowInBeginStack(a0)
+	return (bool)(call)
 }
 
 func IsWindowNavFocusable(window *Window) bool {
 	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
 	call := C.igIsWindowNavFocusable(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func IsWindowWithinBeginStackOf(window *Window, potentialParent *Window) bool {
 	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
 	a1 := (*C.ImGuiWindow)(unsafe.Pointer(potentialParent))
 	call := C.igIsWindowWithinBeginStackOf(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ItemAdd(bb Rect, id ID, navBb *Rect, extraFlags ItemFlags) bool {
@@ -2869,8 +2725,7 @@ func ItemAdd(bb Rect, id ID, navBb *Rect, extraFlags ItemFlags) bool {
 	a2 := (*C.ImRect)(unsafe.Pointer(navBb))
 	a3 := (C.ImGuiItemFlags)(extraFlags)
 	call := C.igItemAdd(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ItemHoverable(bb Rect, id ID, itemFlags ItemFlags) bool {
@@ -2878,8 +2733,7 @@ func ItemHoverable(bb Rect, id ID, itemFlags ItemFlags) bool {
 	a1 := (C.ImGuiID)(id)
 	a2 := (C.ImGuiItemFlags)(itemFlags)
 	call := C.igItemHoverable(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ItemSize_Rect(bb Rect, textBaselineY float32) {
@@ -2912,8 +2766,7 @@ func ListBox_Str_arr(label string, currentItem *int, items []string, itemsCount 
 	a3 := (C.int)(itemsCount)
 	a4 := (C.int)(heightInItems)
 	call := C.igListBox_Str_arr(a0, a1, a2, a3, a4)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func LoadIniSettingsFromDisk(iniFilename string) {
@@ -2930,8 +2783,7 @@ func LoadIniSettingsFromMemory(iniData string, iniSize uint) {
 func LocalizeGetMsg(key LocKey) string {
 	a0 := (C.ImGuiLocKey)(key)
 	call := C.igLocalizeGetMsg(a0)
-	r := C.GoString(call)
-	return r
+	return C.GoString(call)
 }
 
 func LocalizeRegisterEntries(entries *LocEntry, count int) {
@@ -2940,8 +2792,8 @@ func LocalizeRegisterEntries(entries *LocEntry, count int) {
 	C.igLocalizeRegisterEntries(a0, a1)
 }
 
-func LogBegin(ty LogType, autoOpenDepth int) {
-	a0 := (C.ImGuiLogType)(ty)
+func LogBegin(flags LogFlags, autoOpenDepth int) {
+	a0 := (C.ImGuiLogFlags)(flags)
 	a1 := (C.int)(autoOpenDepth)
 	C.igLogBegin(a0, a1)
 }
@@ -3010,8 +2862,7 @@ func MarkItemEdited(id ID) {
 func MemAlloc(size uint) unsafe.Pointer {
 	a0 := (C.size_t)(size)
 	call := C.igMemAlloc(a0)
-	r := (unsafe.Pointer)(call)
-	return r
+	return (unsafe.Pointer)(call)
 }
 
 func MemFree(ptr unsafe.Pointer) {
@@ -3026,8 +2877,7 @@ func MenuItemEx(label string, icon string, shortcut string, selected bool, enabl
 	a3 := (C.bool)(selected)
 	a4 := (C.bool)(enabled)
 	call := C.igMenuItemEx(a0, a1, a2, a3, a4)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func MenuItem_Bool(label string, shortcut string, selected bool, enabled bool) bool {
@@ -3036,8 +2886,7 @@ func MenuItem_Bool(label string, shortcut string, selected bool, enabled bool) b
 	a2 := (C.bool)(selected)
 	a3 := (C.bool)(enabled)
 	call := C.igMenuItem_Bool(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func MenuItem_BoolPtr(label string, shortcut string, pSelected *bool, enabled bool) bool {
@@ -3046,15 +2895,13 @@ func MenuItem_BoolPtr(label string, shortcut string, pSelected *bool, enabled bo
 	a2 := (*C.bool)(unsafe.Pointer(pSelected))
 	a3 := (C.bool)(enabled)
 	call := C.igMenuItem_BoolPtr(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func MouseButtonToKey(button MouseButton) Key {
 	a0 := (C.ImGuiMouseButton)(button)
 	call := C.igMouseButtonToKey(a0)
-	r := (Key)(call)
-	return r
+	return (Key)(call)
 }
 
 func MultiSelectAddSetAll(ms *MultiSelectTempData, selected bool) {
@@ -3112,8 +2959,7 @@ func NavMoveRequestApplyResult() {
 
 func NavMoveRequestButNoResultYet() bool {
 	call := C.igNavMoveRequestButNoResultYet()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func NavMoveRequestCancel() {
@@ -3243,6 +3089,10 @@ func PopItemWidth() {
 	C.igPopItemWidth()
 }
 
+func PopPasswordFont() {
+	C.igPopPasswordFont()
+}
+
 func PopStyleColor(count int) {
 	a0 := (C.int)(count)
 	C.igPopStyleColor(a0)
@@ -3285,9 +3135,10 @@ func PushFocusScope(id ID) {
 	C.igPushFocusScope(a0)
 }
 
-func PushFont(font *Font) {
+func PushFont(font *Font, fontSizeBaseUnscaled float32) {
 	a0 := (*C.ImFont)(unsafe.Pointer(font))
-	C.igPushFont(a0)
+	a1 := (C.float)(fontSizeBaseUnscaled)
+	C.igPushFont(a0, a1)
 }
 
 func PushID_Int(intId int) {
@@ -3331,6 +3182,10 @@ func PushMultiItemsWidths(components int, widthFull float32) {
 func PushOverrideID(id ID) {
 	a0 := (C.ImGuiID)(id)
 	C.igPushOverrideID(a0)
+}
+
+func PushPasswordFont() {
+	C.igPushPasswordFont()
 }
 
 func PushStyleColor_U32(idx Col, col U32) {
@@ -3378,8 +3233,7 @@ func RadioButton_Bool(label string, active bool) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (C.bool)(active)
 	call := C.igRadioButton_Bool(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func RadioButton_IntPtr(label string, v *int, vButton int) bool {
@@ -3387,12 +3241,21 @@ func RadioButton_IntPtr(label string, v *int, vButton int) bool {
 	a1 := (*C.int)(unsafe.Pointer(v))
 	a2 := (C.int)(vButton)
 	call := C.igRadioButton_IntPtr(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
-func RemoveContextHook(context *Context, hookToRemove ID) {
-	a0 := (*C.ImGuiContext)(unsafe.Pointer(context))
+func RegisterFontAtlas(atlas *FontAtlas) {
+	a0 := (*C.ImFontAtlas)(unsafe.Pointer(atlas))
+	C.igRegisterFontAtlas(a0)
+}
+
+func RegisterUserTexture(tex *TextureData) {
+	a0 := (*C.ImTextureData)(unsafe.Pointer(tex))
+	C.igRegisterUserTexture(a0)
+}
+
+func RemoveContextHook(ctx *Context, hookToRemove ID) {
+	a0 := (*C.ImGuiContext)(unsafe.Pointer(ctx))
 	a1 := (C.ImGuiID)(hookToRemove)
 	C.igRemoveContextHook(a0, a1)
 }
@@ -3447,6 +3310,13 @@ func RenderCheckMark(drawList *DrawList, pos mgl32.Vec2, col U32, sz float32) {
 	C.igRenderCheckMark(a0, a1, a2, a3)
 }
 
+func RenderColorComponentMarker(bb Rect, col U32, rounding float32) {
+	a0 := (C.ImRect)(bb)
+	a1 := (C.ImU32)(col)
+	a2 := (C.float)(rounding)
+	C.igRenderColorComponentMarker(a0, a1, a2)
+}
+
 func RenderColorRectWithAlphaCheckerboard(drawList *DrawList, pMin mgl32.Vec2, pMax mgl32.Vec2, fillCol U32, gridStep float32, gridOff mgl32.Vec2, rounding float32, flags DrawFlags) {
 	a0 := (*C.ImDrawList)(unsafe.Pointer(drawList))
 	a1 := mglVec2ToImVec2(pMin)
@@ -3459,10 +3329,16 @@ func RenderColorRectWithAlphaCheckerboard(drawList *DrawList, pMin mgl32.Vec2, p
 	C.igRenderColorRectWithAlphaCheckerboard(a0, a1, a2, a3, a4, a5, a6, a7)
 }
 
-func RenderDragDropTargetRect(bb Rect, itemClipRect Rect) {
+func RenderDragDropTargetRectEx(drawList *DrawList, bb Rect, rounding float32) {
+	a0 := (*C.ImDrawList)(unsafe.Pointer(drawList))
+	a1 := (C.ImRect)(bb)
+	a2 := (C.float)(rounding)
+	C.igRenderDragDropTargetRectEx(a0, a1, a2)
+}
+
+func RenderDragDropTargetRectForItem(bb Rect) {
 	a0 := (C.ImRect)(bb)
-	a1 := (C.ImRect)(itemClipRect)
-	C.igRenderDragDropTargetRect(a0, a1)
+	C.igRenderDragDropTargetRectForItem(a0)
 }
 
 func RenderFrame(pMin mgl32.Vec2, pMax mgl32.Vec2, fillCol U32, borders bool, rounding float32) {
@@ -3504,14 +3380,14 @@ func RenderPlatformWindowsDefault(platformRenderArg unsafe.Pointer, rendererRend
 	C.igRenderPlatformWindowsDefault(a0, a1)
 }
 
-func RenderRectFilledRangeH(drawList *DrawList, rect Rect, col U32, xStartNorm float32, xEndNorm float32, rounding float32) {
+func RenderRectFilledInRangeH(drawList *DrawList, rect Rect, col U32, fillX0 float32, fillX1 float32, rounding float32) {
 	a0 := (*C.ImDrawList)(unsafe.Pointer(drawList))
 	a1 := (C.ImRect)(rect)
 	a2 := (C.ImU32)(col)
-	a3 := (C.float)(xStartNorm)
-	a4 := (C.float)(xEndNorm)
+	a3 := (C.float)(fillX0)
+	a4 := (C.float)(fillX1)
 	a5 := (C.float)(rounding)
-	C.igRenderRectFilledRangeH(a0, a1, a2, a3, a4, a5)
+	C.igRenderRectFilledInRangeH(a0, a1, a2, a3, a4, a5)
 }
 
 func RenderRectFilledWithHole(drawList *DrawList, outer Rect, inner Rect, col U32, rounding float32) {
@@ -3554,16 +3430,15 @@ func RenderTextClippedEx(drawList *DrawList, posMin mgl32.Vec2, posMax mgl32.Vec
 	C.igRenderTextClippedEx(a0, a1, a2, a3, a4, a5, a6, a7)
 }
 
-func RenderTextEllipsis(drawList *DrawList, posMin mgl32.Vec2, posMax mgl32.Vec2, clipMaxX float32, ellipsisMaxX float32, text string, textEnd string, textSizeIfKnown *mgl32.Vec2) {
+func RenderTextEllipsis(drawList *DrawList, posMin mgl32.Vec2, posMax mgl32.Vec2, ellipsisMaxX float32, text string, textEnd string, textSizeIfKnown *mgl32.Vec2) {
 	a0 := (*C.ImDrawList)(unsafe.Pointer(drawList))
 	a1 := mglVec2ToImVec2(posMin)
 	a2 := mglVec2ToImVec2(posMax)
-	a3 := (C.float)(clipMaxX)
-	a4 := (C.float)(ellipsisMaxX)
-	a5 := stringPool.StoreCString(text)
-	a6 := stringPool.StoreCString(textEnd)
-	a7 := (*C.ImVec2)(unsafe.Pointer(&textSizeIfKnown[0]))
-	C.igRenderTextEllipsis(a0, a1, a2, a3, a4, a5, a6, a7)
+	a3 := (C.float)(ellipsisMaxX)
+	a4 := stringPool.StoreCString(text)
+	a5 := stringPool.StoreCString(textEnd)
+	a6 := (*C.ImVec2)(unsafe.Pointer(&textSizeIfKnown[0]))
+	C.igRenderTextEllipsis(a0, a1, a2, a3, a4, a5, a6)
 }
 
 func RenderTextWrapped(pos mgl32.Vec2, text string, textEnd string, wrapWidth float32) {
@@ -3593,8 +3468,7 @@ func SaveIniSettingsToDisk(iniFilename string) {
 func SaveIniSettingsToMemory(outIniSize *uint) string {
 	a0 := (*C.size_t)(unsafe.Pointer(outIniSize))
 	call := C.igSaveIniSettingsToMemory(a0)
-	r := C.GoString(call)
-	return r
+	return C.GoString(call)
 }
 
 func ScaleWindowsInViewport(viewport *ViewportP, scale float32) {
@@ -3621,12 +3495,12 @@ func ScrollToRect(window *Window, rect Rect, flags ScrollFlags) {
 	C.igScrollToRect(a0, a1, a2)
 }
 
-func ScrollToRectEx(pOut *mgl32.Vec2, window *Window, rect Rect, flags ScrollFlags) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	a1 := (*C.ImGuiWindow)(unsafe.Pointer(window))
-	a2 := (C.ImRect)(rect)
-	a3 := (C.ImGuiScrollFlags)(flags)
-	C.igScrollToRectEx(a0, a1, a2, a3)
+func ScrollToRectEx(window *Window, rect Rect, flags ScrollFlags) mgl32.Vec2 {
+	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
+	a1 := (C.ImRect)(rect)
+	a2 := (C.ImGuiScrollFlags)(flags)
+	call := C.igScrollToRectEx(a0, a1, a2)
+	return imVec2ToMglVec2(call)
 }
 
 func Scrollbar(axis Axis) {
@@ -3634,17 +3508,16 @@ func Scrollbar(axis Axis) {
 	C.igScrollbar(a0)
 }
 
-func ScrollbarEx(bb Rect, id ID, axis Axis, pScrollV *S64, availV S64, contentsV S64, flags DrawFlags) bool {
+func ScrollbarEx(bb Rect, id ID, axis Axis, pScrollV *S64, availV S64, contentsV S64, drawRoundingFlags DrawFlags) bool {
 	a0 := (C.ImRect)(bb)
 	a1 := (C.ImGuiID)(id)
 	a2 := (C.ImGuiAxis)(axis)
 	a3 := (*C.ImS64)(unsafe.Pointer(pScrollV))
 	a4 := (C.ImS64)(availV)
 	a5 := (C.ImS64)(contentsV)
-	a6 := (C.ImDrawFlags)(flags)
+	a6 := (C.ImDrawFlags)(drawRoundingFlags)
 	call := C.igScrollbarEx(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func Selectable_Bool(label string, selected bool, flags SelectableFlags, size mgl32.Vec2) bool {
@@ -3653,8 +3526,7 @@ func Selectable_Bool(label string, selected bool, flags SelectableFlags, size mg
 	a2 := (C.ImGuiSelectableFlags)(flags)
 	a3 := mglVec2ToImVec2(size)
 	call := C.igSelectable_Bool(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func Selectable_BoolPtr(label string, pSelected *bool, flags SelectableFlags, size mgl32.Vec2) bool {
@@ -3663,8 +3535,7 @@ func Selectable_BoolPtr(label string, pSelected *bool, flags SelectableFlags, si
 	a2 := (C.ImGuiSelectableFlags)(flags)
 	a3 := mglVec2ToImVec2(size)
 	call := C.igSelectable_BoolPtr(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func Separator() {
@@ -3729,14 +3600,22 @@ func SetColumnWidth(columnIndex int, width float32) {
 	C.igSetColumnWidth(a0, a1)
 }
 
+func SetContextName(ctx *Context, name string) {
+	a0 := (*C.ImGuiContext)(unsafe.Pointer(ctx))
+	a1 := stringPool.StoreCString(name)
+	C.igSetContextName(a0, a1)
+}
+
 func SetCurrentContext(ctx *Context) {
 	a0 := (*C.ImGuiContext)(unsafe.Pointer(ctx))
 	C.igSetCurrentContext(a0)
 }
 
-func SetCurrentFont(font *Font) {
+func SetCurrentFont(font *Font, fontSizeBeforeScaling float32, fontSizeAfterScaling float32) {
 	a0 := (*C.ImFont)(unsafe.Pointer(font))
-	C.igSetCurrentFont(a0)
+	a1 := (C.float)(fontSizeBeforeScaling)
+	a2 := (C.float)(fontSizeAfterScaling)
+	C.igSetCurrentFont(a0, a1, a2)
 }
 
 func SetCurrentViewport(window *Window, viewport *ViewportP) {
@@ -3771,14 +3650,18 @@ func SetDragDropPayload(ty string, data unsafe.Pointer, sz uint, cond Cond) bool
 	a2 := (C.size_t)(sz)
 	a3 := (C.ImGuiCond)(cond)
 	call := C.igSetDragDropPayload(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func SetFocusID(id ID, window *Window) {
 	a0 := (C.ImGuiID)(id)
 	a1 := (*C.ImGuiWindow)(unsafe.Pointer(window))
 	C.igSetFocusID(a0, a1)
+}
+
+func SetFontRasterizerDensity(rasterizerDensity float32) {
+	a0 := (C.float)(rasterizerDensity)
+	C.igSetFontRasterizerDensity(a0)
 }
 
 func SetHoveredID(id ID) {
@@ -3790,15 +3673,17 @@ func SetItemDefaultFocus() {
 	C.igSetItemDefaultFocus()
 }
 
-func SetItemKeyOwner_InputFlags(key Key, flags InputFlags) {
+func SetItemKeyOwner_InputFlags(key Key, flags InputFlags) bool {
 	a0 := (C.ImGuiKey)(key)
 	a1 := (C.ImGuiInputFlags)(flags)
-	C.igSetItemKeyOwner_InputFlags(a0, a1)
+	call := C.igSetItemKeyOwner_InputFlags(a0, a1)
+	return (bool)(call)
 }
 
-func SetItemKeyOwner_Nil(key Key) {
+func SetItemKeyOwner_Nil(key Key) bool {
 	a0 := (C.ImGuiKey)(key)
-	C.igSetItemKeyOwner_Nil(a0)
+	call := C.igSetItemKeyOwner_Nil(a0)
+	return (bool)(call)
 }
 
 func SetItemTooltip(vfmt string, vargs ...interface{}) {
@@ -3825,9 +3710,9 @@ func SetKeyboardFocusHere(offset int) {
 	C.igSetKeyboardFocusHere(a0)
 }
 
-func SetLastItemData(itemId ID, inFlags ItemFlags, statusFlags ItemStatusFlags, itemRect Rect) {
+func SetLastItemData(itemId ID, itemFlags ItemFlags, statusFlags ItemStatusFlags, itemRect Rect) {
 	a0 := (C.ImGuiID)(itemId)
-	a1 := (C.ImGuiItemFlags)(inFlags)
+	a1 := (C.ImGuiItemFlags)(itemFlags)
 	a2 := (C.ImGuiItemStatusFlags)(statusFlags)
 	a3 := (C.ImRect)(itemRect)
 	C.igSetLastItemData(a0, a1, a2, a3)
@@ -3877,6 +3762,11 @@ func SetNextFrameWantCaptureMouse(wantCaptureMouse bool) {
 
 func SetNextItemAllowOverlap() {
 	C.igSetNextItemAllowOverlap()
+}
+
+func SetNextItemColorMarker(col U32) {
+	a0 := (C.ImU32)(col)
+	C.igSetNextItemColorMarker(a0)
 }
 
 func SetNextItemOpen(isOpen bool, cond Cond) {
@@ -4042,8 +3932,7 @@ func SetShortcutRouting(keyChord KeyChord, flags InputFlags, ownerId ID) bool {
 	a1 := (C.ImGuiInputFlags)(flags)
 	a2 := (C.ImGuiID)(ownerId)
 	call := C.igSetShortcutRouting(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func SetStateStorage(storage *Storage) {
@@ -4101,11 +3990,6 @@ func SetWindowFocus_Nil() {
 func SetWindowFocus_Str(name string) {
 	a0 := stringPool.StoreCString(name)
 	C.igSetWindowFocus_Str(a0)
-}
-
-func SetWindowFontScale(scale float32) {
-	a0 := (C.float)(scale)
-	C.igSetWindowFontScale(a0)
 }
 
 func SetWindowHiddenAndSkipItemsForCurrentFrame(window *Window) {
@@ -4211,16 +4095,14 @@ func Shortcut_ID(keyChord KeyChord, flags InputFlags, ownerId ID) bool {
 	a1 := (C.ImGuiInputFlags)(flags)
 	a2 := (C.ImGuiID)(ownerId)
 	call := C.igShortcut_ID(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func Shortcut_Nil(keyChord KeyChord, flags InputFlags) bool {
 	a0 := (C.ImGuiKeyChord)(keyChord)
 	a1 := (C.ImGuiInputFlags)(flags)
 	call := C.igShortcut_Nil(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ShowAboutWindow(pOpen *bool) {
@@ -4266,19 +4148,19 @@ func ShowStyleEditor(ref *Style) {
 func ShowStyleSelector(label string) bool {
 	a0 := stringPool.StoreCString(label)
 	call := C.igShowStyleSelector(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func ShowUserGuide() {
 	C.igShowUserGuide()
 }
 
-func ShrinkWidths(items *ShrinkWidthItem, count int, widthExcess float32) {
+func ShrinkWidths(items *ShrinkWidthItem, count int, widthExcess float32, widthMin float32) {
 	a0 := (*C.ImGuiShrinkWidthItem)(unsafe.Pointer(items))
 	a1 := (C.int)(count)
 	a2 := (C.float)(widthExcess)
-	C.igShrinkWidths(a0, a1, a2)
+	a3 := (C.float)(widthMin)
+	C.igShrinkWidths(a0, a1, a2, a3)
 }
 
 func Shutdown() {
@@ -4293,8 +4175,7 @@ func SliderAngle(label string, vRad *float32, vDegreesMin float32, vDegreesMax f
 	a4 := stringPool.StoreCString(format)
 	a5 := (C.ImGuiSliderFlags)(flags)
 	call := C.igSliderAngle(a0, a1, a2, a3, a4, a5)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func SliderBehavior(bb Rect, id ID, dataType DataType, pV unsafe.Pointer, pMin unsafe.Pointer, pMax unsafe.Pointer, format string, flags SliderFlags, outGrabBb *Rect) bool {
@@ -4308,8 +4189,7 @@ func SliderBehavior(bb Rect, id ID, dataType DataType, pV unsafe.Pointer, pMin u
 	a7 := (C.ImGuiSliderFlags)(flags)
 	a8 := (*C.ImRect)(unsafe.Pointer(outGrabBb))
 	call := C.igSliderBehavior(a0, a1, a2, a3, a4, a5, a6, a7, a8)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func SliderFloat(label string, v *float32, vMin float32, vMax float32, format string, flags SliderFlags) bool {
@@ -4320,8 +4200,7 @@ func SliderFloat(label string, v *float32, vMin float32, vMax float32, format st
 	a4 := stringPool.StoreCString(format)
 	a5 := (C.ImGuiSliderFlags)(flags)
 	call := C.igSliderFloat(a0, a1, a2, a3, a4, a5)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func SliderFloat2(label string, v [2]float32, vMin float32, vMax float32, format string, flags SliderFlags) bool {
@@ -4332,8 +4211,7 @@ func SliderFloat2(label string, v [2]float32, vMin float32, vMax float32, format
 	a4 := stringPool.StoreCString(format)
 	a5 := (C.ImGuiSliderFlags)(flags)
 	call := C.igSliderFloat2(a0, a1, a2, a3, a4, a5)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func SliderFloat3(label string, v *mgl32.Vec3, vMin float32, vMax float32, format string, flags SliderFlags) bool {
@@ -4344,8 +4222,7 @@ func SliderFloat3(label string, v *mgl32.Vec3, vMin float32, vMax float32, forma
 	a4 := stringPool.StoreCString(format)
 	a5 := (C.ImGuiSliderFlags)(flags)
 	call := C.igSliderFloat3(a0, a1, a2, a3, a4, a5)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func SliderFloat4(label string, v *mgl32.Vec4, vMin float32, vMax float32, format string, flags SliderFlags) bool {
@@ -4356,8 +4233,7 @@ func SliderFloat4(label string, v *mgl32.Vec4, vMin float32, vMax float32, forma
 	a4 := stringPool.StoreCString(format)
 	a5 := (C.ImGuiSliderFlags)(flags)
 	call := C.igSliderFloat4(a0, a1, a2, a3, a4, a5)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func SliderInt(label string, v *int, vMin int, vMax int, format string, flags SliderFlags) bool {
@@ -4368,8 +4244,7 @@ func SliderInt(label string, v *int, vMin int, vMax int, format string, flags Sl
 	a4 := stringPool.StoreCString(format)
 	a5 := (C.ImGuiSliderFlags)(flags)
 	call := C.igSliderInt(a0, a1, a2, a3, a4, a5)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func SliderInt2(label string, v [2]int, vMin int, vMax int, format string, flags SliderFlags) bool {
@@ -4380,8 +4255,7 @@ func SliderInt2(label string, v [2]int, vMin int, vMax int, format string, flags
 	a4 := stringPool.StoreCString(format)
 	a5 := (C.ImGuiSliderFlags)(flags)
 	call := C.igSliderInt2(a0, a1, a2, a3, a4, a5)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func SliderInt3(label string, v [3]int, vMin int, vMax int, format string, flags SliderFlags) bool {
@@ -4392,8 +4266,7 @@ func SliderInt3(label string, v [3]int, vMin int, vMax int, format string, flags
 	a4 := stringPool.StoreCString(format)
 	a5 := (C.ImGuiSliderFlags)(flags)
 	call := C.igSliderInt3(a0, a1, a2, a3, a4, a5)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func SliderInt4(label string, v [4]int, vMin int, vMax int, format string, flags SliderFlags) bool {
@@ -4404,8 +4277,7 @@ func SliderInt4(label string, v [4]int, vMin int, vMax int, format string, flags
 	a4 := stringPool.StoreCString(format)
 	a5 := (C.ImGuiSliderFlags)(flags)
 	call := C.igSliderInt4(a0, a1, a2, a3, a4, a5)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func SliderScalar(label string, dataType DataType, pData unsafe.Pointer, pMin unsafe.Pointer, pMax unsafe.Pointer, format string, flags SliderFlags) bool {
@@ -4417,8 +4289,7 @@ func SliderScalar(label string, dataType DataType, pData unsafe.Pointer, pMin un
 	a5 := stringPool.StoreCString(format)
 	a6 := (C.ImGuiSliderFlags)(flags)
 	call := C.igSliderScalar(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func SliderScalarN(label string, dataType DataType, pData unsafe.Pointer, components int, pMin unsafe.Pointer, pMax unsafe.Pointer, format string, flags SliderFlags) bool {
@@ -4431,15 +4302,13 @@ func SliderScalarN(label string, dataType DataType, pData unsafe.Pointer, compon
 	a6 := stringPool.StoreCString(format)
 	a7 := (C.ImGuiSliderFlags)(flags)
 	call := C.igSliderScalarN(a0, a1, a2, a3, a4, a5, a6, a7)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func SmallButton(label string) bool {
 	a0 := stringPool.StoreCString(label)
 	call := C.igSmallButton(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func Spacing() {
@@ -4458,8 +4327,7 @@ func SplitterBehavior(bb Rect, id ID, axis Axis, size1 *float32, size2 *float32,
 	a8 := (C.float)(hoverVisibilityDelay)
 	a9 := (C.ImU32)(bgCol)
 	call := C.igSplitterBehavior(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func StartMouseMovingWindow(window *Window) {
@@ -4472,6 +4340,10 @@ func StartMouseMovingWindowOrNode(window *Window, node *DockNode, undock bool) {
 	a1 := (*C.ImGuiDockNode)(unsafe.Pointer(node))
 	a2 := (C.bool)(undock)
 	C.igStartMouseMovingWindowOrNode(a0, a1, a2)
+}
+
+func StopMouseMovingWindow() {
+	C.igStopMouseMovingWindow()
 }
 
 func StyleColorsClassic(dst *Style) {
@@ -4502,57 +4374,56 @@ func TabBarCloseTab(tabBar *TabBar, tab *TabItem) {
 	C.igTabBarCloseTab(a0, a1)
 }
 
+func TabBarFindByID(id ID) *TabBar {
+	a0 := (C.ImGuiID)(id)
+	call := C.igTabBarFindByID(a0)
+	return (*TabBar)(call)
+}
+
 func TabBarFindMostRecentlySelectedTabForActiveWindow(tabBar *TabBar) *TabItem {
 	a0 := (*C.ImGuiTabBar)(unsafe.Pointer(tabBar))
 	call := C.igTabBarFindMostRecentlySelectedTabForActiveWindow(a0)
-	r := (*TabItem)(call)
-	return r
+	return (*TabItem)(call)
 }
 
 func TabBarFindTabByID(tabBar *TabBar, tabId ID) *TabItem {
 	a0 := (*C.ImGuiTabBar)(unsafe.Pointer(tabBar))
 	a1 := (C.ImGuiID)(tabId)
 	call := C.igTabBarFindTabByID(a0, a1)
-	r := (*TabItem)(call)
-	return r
+	return (*TabItem)(call)
 }
 
 func TabBarFindTabByOrder(tabBar *TabBar, order int) *TabItem {
 	a0 := (*C.ImGuiTabBar)(unsafe.Pointer(tabBar))
 	a1 := (C.int)(order)
 	call := C.igTabBarFindTabByOrder(a0, a1)
-	r := (*TabItem)(call)
-	return r
+	return (*TabItem)(call)
 }
 
 func TabBarGetCurrentTab(tabBar *TabBar) *TabItem {
 	a0 := (*C.ImGuiTabBar)(unsafe.Pointer(tabBar))
 	call := C.igTabBarGetCurrentTab(a0)
-	r := (*TabItem)(call)
-	return r
+	return (*TabItem)(call)
 }
 
 func TabBarGetTabName(tabBar *TabBar, tab *TabItem) string {
 	a0 := (*C.ImGuiTabBar)(unsafe.Pointer(tabBar))
 	a1 := (*C.ImGuiTabItem)(unsafe.Pointer(tab))
 	call := C.igTabBarGetTabName(a0, a1)
-	r := C.GoString(call)
-	return r
+	return C.GoString(call)
 }
 
 func TabBarGetTabOrder(tabBar *TabBar, tab *TabItem) int {
 	a0 := (*C.ImGuiTabBar)(unsafe.Pointer(tabBar))
 	a1 := (*C.ImGuiTabItem)(unsafe.Pointer(tab))
 	call := C.igTabBarGetTabOrder(a0, a1)
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
 func TabBarProcessReorder(tabBar *TabBar) bool {
 	a0 := (*C.ImGuiTabBar)(unsafe.Pointer(tabBar))
 	call := C.igTabBarProcessReorder(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TabBarQueueFocus_Str(tabBar *TabBar, tabName string) {
@@ -4581,6 +4452,11 @@ func TabBarQueueReorderFromMousePos(tabBar *TabBar, tab *TabItem, mousePos mgl32
 	C.igTabBarQueueReorderFromMousePos(a0, a1, a2)
 }
 
+func TabBarRemove(tabBar *TabBar) {
+	a0 := (*C.ImGuiTabBar)(unsafe.Pointer(tabBar))
+	C.igTabBarRemove(a0)
+}
+
 func TabBarRemoveTab(tabBar *TabBar, tabId ID) {
 	a0 := (*C.ImGuiTabBar)(unsafe.Pointer(tabBar))
 	a1 := (C.ImGuiID)(tabId)
@@ -4599,21 +4475,20 @@ func TabItemButton(label string, flags TabItemFlags) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (C.ImGuiTabItemFlags)(flags)
 	call := C.igTabItemButton(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
-func TabItemCalcSize_Str(pOut *mgl32.Vec2, label string, hasCloseButtonOrUnsavedMarker bool) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	a1 := stringPool.StoreCString(label)
-	a2 := (C.bool)(hasCloseButtonOrUnsavedMarker)
-	C.igTabItemCalcSize_Str(a0, a1, a2)
+func TabItemCalcSize_Str(label string, hasCloseButtonOrUnsavedMarker bool) mgl32.Vec2 {
+	a0 := stringPool.StoreCString(label)
+	a1 := (C.bool)(hasCloseButtonOrUnsavedMarker)
+	call := C.igTabItemCalcSize_Str(a0, a1)
+	return imVec2ToMglVec2(call)
 }
 
-func TabItemCalcSize_WindowPtr(pOut *mgl32.Vec2, window *Window) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	a1 := (*C.ImGuiWindow)(unsafe.Pointer(window))
-	C.igTabItemCalcSize_WindowPtr(a0, a1)
+func TabItemCalcSize_WindowPtr(window *Window) mgl32.Vec2 {
+	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
+	call := C.igTabItemCalcSize_WindowPtr(a0)
+	return imVec2ToMglVec2(call)
 }
 
 func TabItemEx(tabBar *TabBar, label string, pOpen *bool, flags TabItemFlags, dockedWindow *Window) bool {
@@ -4623,8 +4498,7 @@ func TabItemEx(tabBar *TabBar, label string, pOpen *bool, flags TabItemFlags, do
 	a3 := (C.ImGuiTabItemFlags)(flags)
 	a4 := (*C.ImGuiWindow)(unsafe.Pointer(dockedWindow))
 	call := C.igTabItemEx(a0, a1, a2, a3, a4)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TabItemLabelAndCloseButton(drawList *DrawList, bb Rect, flags TabItemFlags, framePadding mgl32.Vec2, label string, tabId ID, closeButtonId ID, isContentsVisible bool, outJustClosed *bool, outTextClipped *bool) {
@@ -4641,6 +4515,13 @@ func TabItemLabelAndCloseButton(drawList *DrawList, bb Rect, flags TabItemFlags,
 	C.igTabItemLabelAndCloseButton(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9)
 }
 
+func TabItemSpacing(strId string, flags TabItemFlags, width float32) {
+	a0 := stringPool.StoreCString(strId)
+	a1 := (C.ImGuiTabItemFlags)(flags)
+	a2 := (C.float)(width)
+	C.igTabItemSpacing(a0, a1, a2)
+}
+
 func TableAngledHeadersRow() {
 	C.igTableAngledHeadersRow()
 }
@@ -4652,6 +4533,12 @@ func TableAngledHeadersRowEx(rowId ID, angle float32, maxLabelWidth float32, dat
 	a3 := (*C.ImGuiTableHeaderData)(unsafe.Pointer(data))
 	a4 := (C.int)(dataCount)
 	C.igTableAngledHeadersRowEx(a0, a1, a2, a3, a4)
+}
+
+func TableApplyExternalUnclipRect(table *Table, rect *Rect) {
+	a0 := (*C.ImGuiTable)(unsafe.Pointer(table))
+	a1 := (*C.ImRect)(unsafe.Pointer(rect))
+	C.igTableApplyExternalUnclipRect(a0, a1)
 }
 
 func TableBeginApplyRequests(table *Table) {
@@ -4668,8 +4555,7 @@ func TableBeginCell(table *Table, columnN int) {
 func TableBeginContextMenuPopup(table *Table) bool {
 	a0 := (*C.ImGuiTable)(unsafe.Pointer(table))
 	call := C.igTableBeginContextMenuPopup(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TableBeginInitMemory(table *Table, columnsCount int) {
@@ -4687,8 +4573,7 @@ func TableCalcMaxColumnWidth(table *Table, columnN int) float32 {
 	a0 := (*C.ImGuiTable)(unsafe.Pointer(table))
 	a1 := (C.int)(columnN)
 	call := C.igTableCalcMaxColumnWidth(a0, a1)
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func TableDrawBorders(table *Table) {
@@ -4715,14 +4600,18 @@ func TableEndRow(table *Table) {
 func TableFindByID(id ID) *Table {
 	a0 := (C.ImGuiID)(id)
 	call := C.igTableFindByID(a0)
-	r := (*Table)(call)
-	return r
+	return (*Table)(call)
 }
 
 func TableFixColumnSortDirection(table *Table, column *TableColumn) {
 	a0 := (*C.ImGuiTable)(unsafe.Pointer(table))
 	a1 := (*C.ImGuiTableColumn)(unsafe.Pointer(column))
 	C.igTableFixColumnSortDirection(a0, a1)
+}
+
+func TableFixDisplayOrder(table *Table) {
+	a0 := (*C.ImGuiTable)(unsafe.Pointer(table))
+	C.igTableFixDisplayOrder(a0)
 }
 
 func TableGcCompactSettings() {
@@ -4742,56 +4631,49 @@ func TableGcCompactTransientBuffers_TableTempDataPtr(table *TableTempData) {
 func TableGetBoundSettings(table *Table) *TableSettings {
 	a0 := (*C.ImGuiTable)(unsafe.Pointer(table))
 	call := C.igTableGetBoundSettings(a0)
-	r := (*TableSettings)(call)
-	return r
+	return (*TableSettings)(call)
 }
 
-func TableGetCellBgRect(pOut *Rect, table *Table, columnN int) {
-	a0 := (*C.ImRect)(unsafe.Pointer(pOut))
-	a1 := (*C.ImGuiTable)(unsafe.Pointer(table))
-	a2 := (C.int)(columnN)
-	C.igTableGetCellBgRect(a0, a1, a2)
+func TableGetCellBgRect(table *Table, columnN int) Rect {
+	a0 := (*C.ImGuiTable)(unsafe.Pointer(table))
+	a1 := (C.int)(columnN)
+	call := C.igTableGetCellBgRect(a0, a1)
+	return (Rect)(call)
 }
 
 func TableGetColumnCount() int {
 	call := C.igTableGetColumnCount()
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
 func TableGetColumnFlags(columnN int) TableColumnFlags {
 	a0 := (C.int)(columnN)
 	call := C.igTableGetColumnFlags(a0)
-	r := (TableColumnFlags)(call)
-	return r
+	return (TableColumnFlags)(call)
 }
 
 func TableGetColumnIndex() int {
 	call := C.igTableGetColumnIndex()
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
 func TableGetColumnName_Int(columnN int) string {
 	a0 := (C.int)(columnN)
 	call := C.igTableGetColumnName_Int(a0)
-	r := C.GoString(call)
-	return r
+	return C.GoString(call)
 }
 
 func TableGetColumnName_TablePtr(table *Table, columnN int) string {
 	a0 := (*C.ImGuiTable)(unsafe.Pointer(table))
 	a1 := (C.int)(columnN)
 	call := C.igTableGetColumnName_TablePtr(a0, a1)
-	r := C.GoString(call)
-	return r
+	return C.GoString(call)
 }
 
 func TableGetColumnNextSortDirection(column *TableColumn) SortDirection {
 	a0 := (*C.ImGuiTableColumn)(unsafe.Pointer(column))
 	call := C.igTableGetColumnNextSortDirection(a0)
-	r := (SortDirection)(call)
-	return r
+	return (SortDirection)(call)
 }
 
 func TableGetColumnResizeID(table *Table, columnN int, instanceNo int) ID {
@@ -4799,68 +4681,58 @@ func TableGetColumnResizeID(table *Table, columnN int, instanceNo int) ID {
 	a1 := (C.int)(columnN)
 	a2 := (C.int)(instanceNo)
 	call := C.igTableGetColumnResizeID(a0, a1, a2)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func TableGetColumnWidthAuto(table *Table, column *TableColumn) float32 {
 	a0 := (*C.ImGuiTable)(unsafe.Pointer(table))
 	a1 := (*C.ImGuiTableColumn)(unsafe.Pointer(column))
 	call := C.igTableGetColumnWidthAuto(a0, a1)
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func TableGetHeaderAngledMaxLabelWidth() float32 {
 	call := C.igTableGetHeaderAngledMaxLabelWidth()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func TableGetHeaderRowHeight() float32 {
 	call := C.igTableGetHeaderRowHeight()
-	r := (float32)(call)
-	return r
+	return (float32)(call)
 }
 
 func TableGetHoveredColumn() int {
 	call := C.igTableGetHoveredColumn()
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
 func TableGetHoveredRow() int {
 	call := C.igTableGetHoveredRow()
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
 func TableGetInstanceData(table *Table, instanceNo int) *TableInstanceData {
 	a0 := (*C.ImGuiTable)(unsafe.Pointer(table))
 	a1 := (C.int)(instanceNo)
 	call := C.igTableGetInstanceData(a0, a1)
-	r := (*TableInstanceData)(call)
-	return r
+	return (*TableInstanceData)(call)
 }
 
 func TableGetInstanceID(table *Table, instanceNo int) ID {
 	a0 := (*C.ImGuiTable)(unsafe.Pointer(table))
 	a1 := (C.int)(instanceNo)
 	call := C.igTableGetInstanceID(a0, a1)
-	r := (ID)(call)
-	return r
+	return (ID)(call)
 }
 
 func TableGetRowIndex() int {
 	call := C.igTableGetRowIndex()
-	r := (int)(call)
-	return r
+	return (int)(call)
 }
 
 func TableGetSortSpecs() *TableSortSpecs {
 	call := C.igTableGetSortSpecs()
-	r := (*TableSortSpecs)(call)
-	return r
+	return (*TableSortSpecs)(call)
 }
 
 func TableHeader(label string) {
@@ -4884,8 +4756,7 @@ func TableMergeDrawChannels(table *Table) {
 
 func TableNextColumn() bool {
 	call := C.igTableNextColumn()
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TableNextRow(rowFlags TableRowFlags, minRowHeight float32) {
@@ -4903,8 +4774,24 @@ func TablePopBackgroundChannel() {
 	C.igTablePopBackgroundChannel()
 }
 
+func TablePopColumnChannel() {
+	C.igTablePopColumnChannel()
+}
+
 func TablePushBackgroundChannel() {
 	C.igTablePushBackgroundChannel()
+}
+
+func TablePushColumnChannel(columnN int) {
+	a0 := (C.int)(columnN)
+	C.igTablePushColumnChannel(a0)
+}
+
+func TableQueueSetColumnDisplayOrder(table *Table, columnN int, dstOrder int) {
+	a0 := (*C.ImGuiTable)(unsafe.Pointer(table))
+	a1 := (C.int)(columnN)
+	a2 := (C.int)(dstOrder)
+	C.igTableQueueSetColumnDisplayOrder(a0, a1, a2)
 }
 
 func TableRemove(table *Table) {
@@ -4929,6 +4816,13 @@ func TableSetBgColor(target TableBgTarget, color U32, columnN int) {
 	C.igTableSetBgColor(a0, a1, a2)
 }
 
+func TableSetColumnDisplayOrder(table *Table, columnN int, dstOrder int) {
+	a0 := (*C.ImGuiTable)(unsafe.Pointer(table))
+	a1 := (C.int)(columnN)
+	a2 := (C.int)(dstOrder)
+	C.igTableSetColumnDisplayOrder(a0, a1, a2)
+}
+
 func TableSetColumnEnabled(columnN int, v bool) {
 	a0 := (C.int)(columnN)
 	a1 := (C.bool)(v)
@@ -4938,8 +4832,7 @@ func TableSetColumnEnabled(columnN int, v bool) {
 func TableSetColumnIndex(columnN int) bool {
 	a0 := (C.int)(columnN)
 	call := C.igTableSetColumnIndex(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TableSetColumnSortDirection(columnN int, sortDirection SortDirection, appendToSortSpecs bool) {
@@ -4974,15 +4867,13 @@ func TableSettingsCreate(id ID, columnsCount int) *TableSettings {
 	a0 := (C.ImGuiID)(id)
 	a1 := (C.int)(columnsCount)
 	call := C.igTableSettingsCreate(a0, a1)
-	r := (*TableSettings)(call)
-	return r
+	return (*TableSettings)(call)
 }
 
 func TableSettingsFindByID(id ID) *TableSettings {
 	a0 := (C.ImGuiID)(id)
 	call := C.igTableSettingsFindByID(a0)
-	r := (*TableSettings)(call)
-	return r
+	return (*TableSettings)(call)
 }
 
 func TableSetupColumn(label string, flags TableColumnFlags, initWidthOrWeight float32, userId ID) {
@@ -5037,8 +4928,7 @@ func TeleportMousePos(pos mgl32.Vec2) {
 func TempInputIsActive(id ID) bool {
 	a0 := (C.ImGuiID)(id)
 	call := C.igTempInputIsActive(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TempInputScalar(bb Rect, id ID, label string, dataType DataType, pData unsafe.Pointer, format string, pClampMin unsafe.Pointer, pClampMax unsafe.Pointer) bool {
@@ -5051,41 +4941,49 @@ func TempInputScalar(bb Rect, id ID, label string, dataType DataType, pData unsa
 	a6 := (unsafe.Pointer)(pClampMin)
 	a7 := (unsafe.Pointer)(pClampMax)
 	call := C.igTempInputScalar(a0, a1, a2, a3, a4, a5, a6, a7)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
-func TempInputText(bb Rect, id ID, label string, buf string, bufSize int, flags InputTextFlags) bool {
+func TempInputText(bb Rect, id ID, label string, buf []byte, flags InputTextFlags, callback InputTextCallback, userData unsafe.Pointer) bool {
 	a0 := (C.ImRect)(bb)
 	a1 := (C.ImGuiID)(id)
 	a2 := stringPool.StoreCString(label)
-	a3 := stringPool.StoreCString(buf)
-	a4 := (C.int)(bufSize)
+	a3 := (*C.char)(nil)
+	if len(buf) > 0 {
+		a3 = (*C.char)(unsafe.Pointer(&buf[0]))
+	}
+	a4 := (C.size_t)(len(buf))
 	a5 := (C.ImGuiInputTextFlags)(flags)
-	call := C.igTempInputText(a0, a1, a2, a3, a4, a5)
-	r := (bool)(call)
-	return r
+	a6 := (C.ImGuiInputTextCallback)(callback)
+	a7 := (unsafe.Pointer)(userData)
+	call := C.igTempInputText(a0, a1, a2, a3, a4, a5, a6, a7)
+	return (bool)(call)
 }
 
 func TestKeyOwner(key Key, ownerId ID) bool {
 	a0 := (C.ImGuiKey)(key)
 	a1 := (C.ImGuiID)(ownerId)
 	call := C.igTestKeyOwner(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TestShortcutRouting(keyChord KeyChord, ownerId ID) bool {
 	a0 := (C.ImGuiKeyChord)(keyChord)
 	a1 := (C.ImGuiID)(ownerId)
 	call := C.igTestShortcutRouting(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func Text(vfmt string, vargs ...interface{}) {
 	a0 := stringPool.StoreCString(fmt.Sprintf(vfmt, vargs...))
 	C.wrap_igText(a0)
+}
+
+func TextAligned(alignX float32, sizeX float32, vfmt string, vargs ...interface{}) {
+	a0 := (C.float)(alignX)
+	a1 := (C.float)(sizeX)
+	a2 := stringPool.StoreCString(fmt.Sprintf(vfmt, vargs...))
+	C.wrap_igTextAligned(a0, a1, a2)
 }
 
 func TextColored(col mgl32.Vec4, vfmt string, vargs ...interface{}) {
@@ -5109,14 +5007,14 @@ func TextEx(text string, textEnd string, flags TextFlags) {
 func TextLink(label string) bool {
 	a0 := stringPool.StoreCString(label)
 	call := C.igTextLink(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
-func TextLinkOpenURL(label string, url string) {
+func TextLinkOpenURL(label string, url string) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := stringPool.StoreCString(url)
-	C.igTextLinkOpenURL(a0, a1)
+	call := C.igTextLinkOpenURL(a0, a1)
+	return (bool)(call)
 }
 
 func TextUnformatted(text string, textEnd string) {
@@ -5145,8 +5043,17 @@ func TreeNodeBehavior(id ID, flags TreeNodeFlags, label string, labelEnd string)
 	a2 := stringPool.StoreCString(label)
 	a3 := stringPool.StoreCString(labelEnd)
 	call := C.igTreeNodeBehavior(a0, a1, a2, a3)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
+}
+
+func TreeNodeDrawLineToChildNode(targetPos mgl32.Vec2) {
+	a0 := mglVec2ToImVec2(targetPos)
+	C.igTreeNodeDrawLineToChildNode(a0)
+}
+
+func TreeNodeDrawLineToTreePop(data *TreeNodeStackData) {
+	a0 := (*C.ImGuiTreeNodeStackData)(unsafe.Pointer(data))
+	C.igTreeNodeDrawLineToTreePop(a0)
 }
 
 func TreeNodeEx_Ptr(ptrId unsafe.Pointer, flags TreeNodeFlags, vfmt string, vargs ...interface{}) bool {
@@ -5154,16 +5061,14 @@ func TreeNodeEx_Ptr(ptrId unsafe.Pointer, flags TreeNodeFlags, vfmt string, varg
 	a1 := (C.ImGuiTreeNodeFlags)(flags)
 	a2 := stringPool.StoreCString(fmt.Sprintf(vfmt, vargs...))
 	call := C.wrap_igTreeNodeEx_Ptr(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TreeNodeEx_Str(label string, flags TreeNodeFlags) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (C.ImGuiTreeNodeFlags)(flags)
 	call := C.igTreeNodeEx_Str(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TreeNodeEx_StrStr(strId string, flags TreeNodeFlags, vfmt string, vargs ...interface{}) bool {
@@ -5171,15 +5076,13 @@ func TreeNodeEx_StrStr(strId string, flags TreeNodeFlags, vfmt string, vargs ...
 	a1 := (C.ImGuiTreeNodeFlags)(flags)
 	a2 := stringPool.StoreCString(fmt.Sprintf(vfmt, vargs...))
 	call := C.wrap_igTreeNodeEx_StrStr(a0, a1, a2)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TreeNodeGetOpen(storageId ID) bool {
 	a0 := (C.ImGuiID)(storageId)
 	call := C.igTreeNodeGetOpen(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TreeNodeSetOpen(storageId ID, open bool) {
@@ -5192,31 +5095,27 @@ func TreeNodeUpdateNextOpen(storageId ID, flags TreeNodeFlags) bool {
 	a0 := (C.ImGuiID)(storageId)
 	a1 := (C.ImGuiTreeNodeFlags)(flags)
 	call := C.igTreeNodeUpdateNextOpen(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TreeNode_Ptr(ptrId unsafe.Pointer, vfmt string, vargs ...interface{}) bool {
 	a0 := (unsafe.Pointer)(ptrId)
 	a1 := stringPool.StoreCString(fmt.Sprintf(vfmt, vargs...))
 	call := C.wrap_igTreeNode_Ptr(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TreeNode_Str(label string) bool {
 	a0 := stringPool.StoreCString(label)
 	call := C.igTreeNode_Str(a0)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TreeNode_StrStr(strId string, vfmt string, vargs ...interface{}) bool {
 	a0 := stringPool.StoreCString(strId)
 	a1 := stringPool.StoreCString(fmt.Sprintf(vfmt, vargs...))
 	call := C.wrap_igTreeNode_StrStr(a0, a1)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func TreePop() {
@@ -5243,8 +5142,24 @@ func Unindent(indentW float32) {
 	C.igUnindent(a0)
 }
 
-func UpdateHoveredWindowAndCaptureFlags() {
-	C.igUpdateHoveredWindowAndCaptureFlags()
+func UnregisterFontAtlas(atlas *FontAtlas) {
+	a0 := (*C.ImFontAtlas)(unsafe.Pointer(atlas))
+	C.igUnregisterFontAtlas(a0)
+}
+
+func UnregisterUserTexture(tex *TextureData) {
+	a0 := (*C.ImTextureData)(unsafe.Pointer(tex))
+	C.igUnregisterUserTexture(a0)
+}
+
+func UpdateCurrentFontSize(restoreFontSizeAfterScaling float32) {
+	a0 := (C.float)(restoreFontSizeAfterScaling)
+	C.igUpdateCurrentFontSize(a0)
+}
+
+func UpdateHoveredWindowAndCaptureFlags(mousePos mgl32.Vec2) {
+	a0 := mglVec2ToImVec2(mousePos)
+	C.igUpdateHoveredWindowAndCaptureFlags(a0)
 }
 
 func UpdateInputEvents(trickleFastInputs bool) {
@@ -5285,8 +5200,7 @@ func VSliderFloat(label string, size mgl32.Vec2, v *float32, vMin float32, vMax 
 	a5 := stringPool.StoreCString(format)
 	a6 := (C.ImGuiSliderFlags)(flags)
 	call := C.igVSliderFloat(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func VSliderInt(label string, size mgl32.Vec2, v *int, vMin int, vMax int, format string, flags SliderFlags) bool {
@@ -5298,8 +5212,7 @@ func VSliderInt(label string, size mgl32.Vec2, v *int, vMin int, vMax int, forma
 	a5 := stringPool.StoreCString(format)
 	a6 := (C.ImGuiSliderFlags)(flags)
 	call := C.igVSliderInt(a0, a1, a2, a3, a4, a5, a6)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func VSliderScalar(label string, size mgl32.Vec2, dataType DataType, pData unsafe.Pointer, pMin unsafe.Pointer, pMax unsafe.Pointer, format string, flags SliderFlags) bool {
@@ -5312,8 +5225,7 @@ func VSliderScalar(label string, size mgl32.Vec2, dataType DataType, pData unsaf
 	a6 := stringPool.StoreCString(format)
 	a7 := (C.ImGuiSliderFlags)(flags)
 	call := C.igVSliderScalar(a0, a1, a2, a3, a4, a5, a6, a7)
-	r := (bool)(call)
-	return r
+	return (bool)(call)
 }
 
 func Value_Bool(prefix string, b bool) {
@@ -5341,31 +5253,30 @@ func Value_Uint(prefix string, v uint) {
 	C.igValue_Uint(a0, a1)
 }
 
-func WindowPosAbsToRel(pOut *mgl32.Vec2, window *Window, p mgl32.Vec2) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	a1 := (*C.ImGuiWindow)(unsafe.Pointer(window))
-	a2 := mglVec2ToImVec2(p)
-	C.igWindowPosAbsToRel(a0, a1, a2)
+func WindowPosAbsToRel(window *Window, p mgl32.Vec2) mgl32.Vec2 {
+	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
+	a1 := mglVec2ToImVec2(p)
+	call := C.igWindowPosAbsToRel(a0, a1)
+	return imVec2ToMglVec2(call)
 }
 
-func WindowPosRelToAbs(pOut *mgl32.Vec2, window *Window, p mgl32.Vec2) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&pOut[0]))
-	a1 := (*C.ImGuiWindow)(unsafe.Pointer(window))
-	a2 := mglVec2ToImVec2(p)
-	C.igWindowPosRelToAbs(a0, a1, a2)
+func WindowPosRelToAbs(window *Window, p mgl32.Vec2) mgl32.Vec2 {
+	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
+	a1 := mglVec2ToImVec2(p)
+	call := C.igWindowPosRelToAbs(a0, a1)
+	return imVec2ToMglVec2(call)
 }
 
-func WindowRectAbsToRel(pOut *Rect, window *Window, r Rect) {
-	a0 := (*C.ImRect)(unsafe.Pointer(pOut))
-	a1 := (*C.ImGuiWindow)(unsafe.Pointer(window))
-	a2 := (C.ImRect)(r)
-	C.igWindowRectAbsToRel(a0, a1, a2)
+func WindowRectAbsToRel(window *Window, r Rect) Rect {
+	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
+	a1 := (C.ImRect)(r)
+	call := C.igWindowRectAbsToRel(a0, a1)
+	return (Rect)(call)
 }
 
-func WindowRectRelToAbs(pOut *Rect, window *Window, r Rect) {
-	a0 := (*C.ImRect)(unsafe.Pointer(pOut))
-	a1 := (*C.ImGuiWindow)(unsafe.Pointer(window))
-	a2 := (C.ImRect)(r)
-	C.igWindowRectRelToAbs(a0, a1, a2)
+func WindowRectRelToAbs(window *Window, r Rect) Rect {
+	a0 := (*C.ImGuiWindow)(unsafe.Pointer(window))
+	a1 := (C.ImRect)(r)
+	call := C.igWindowRectRelToAbs(a0, a1)
+	return (Rect)(call)
 }
-
