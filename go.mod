@@ -2,7 +2,7 @@ module github.com/nitrix/imgui-go
 
 go 1.23.1
 
-require github.com/go-gl/gl v0.0.0-20231021071112-07e5d0ea2e71
+require github.com/go-gl/gl v0.0.0-20260331235117-4566fea9a276
 
 require (
 	github.com/go-gl/mathgl v1.1.0
