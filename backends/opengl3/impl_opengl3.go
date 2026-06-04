@@ -1,3 +1,5 @@
+//go:build cgo
+
 package opengl3
 
 // #cgo CXXFLAGS: -std=c++17 -O3
@@ -15,10 +17,16 @@ import (
 	"github.com/nitrix/imgui-go"
 )
 
-func Init(window *glfw.Window) {
-	s := C.CString("#version 330 core")
-	C.ImGui_ImplOpenGL3_Init(s)
-	C.free(unsafe.Pointer(s))
+func Init(window *glfw.Window, glslVersion ...string) bool {
+	_ = window
+
+	var s *C.char
+	if len(glslVersion) > 0 && glslVersion[0] != "" {
+		s = C.CString(glslVersion[0])
+		defer C.free(unsafe.Pointer(s))
+	}
+
+	return bool(C.ImGui_ImplOpenGL3_Init(s))
 }
 
 func NewFrame() {

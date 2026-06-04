@@ -1,3 +1,5 @@
+//go:build cgo
+
 package imgui
 
 // #define CIMGUI_DEFINE_ENUMS_AND_STRUCTS 1
@@ -407,7 +409,7 @@ func ButtonEx(label string, sizeArg mgl32.Vec2, flags ButtonFlags) bool {
 	return (bool)(call)
 }
 
-func CalcClipRectVisibleItemsY(clipRect Rect, pos mgl32.Vec2, itemsHeight float32, outVisibleStart *int, outVisibleEnd *int) {
+func CalcClipRectVisibleItemsY(clipRect Rect, pos mgl32.Vec2, itemsHeight float32, outVisibleStart *int32, outVisibleEnd *int32) {
 	a0 := (C.ImRect)(clipRect)
 	a1 := mglVec2ToImVec2(pos)
 	a2 := (C.float)(itemsHeight)
@@ -481,7 +483,7 @@ func Checkbox(label string, v *bool) bool {
 	return (bool)(call)
 }
 
-func CheckboxFlags_IntPtr(label string, flags *int, flagsValue int) bool {
+func CheckboxFlags_IntPtr(label string, flags *int32, flagsValue int) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (*C.int)(unsafe.Pointer(flags))
 	a2 := (C.int)(flagsValue)
@@ -505,7 +507,7 @@ func CheckboxFlags_U64Ptr(label string, flags *U64, flagsValue U64) bool {
 	return (bool)(call)
 }
 
-func CheckboxFlags_UintPtr(label string, flags *uint, flagsValue uint) bool {
+func CheckboxFlags_UintPtr(label string, flags *uint32, flagsValue uint) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (*C.uint)(unsafe.Pointer(flags))
 	a2 := (C.uint)(flagsValue)
@@ -631,7 +633,10 @@ func ColorEdit3(label string, col *mgl32.Vec3, flags ColorEditFlags) bool {
 
 func ColorEdit4(label string, col *mgl32.Vec4, flags ColorEditFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.float)(unsafe.Pointer(&col[0]))
+	a1 := (*C.float)(nil)
+	if col != nil {
+		a1 = (*C.float)(unsafe.Pointer(&col[0]))
+	}
 	a2 := (C.ImGuiColorEditFlags)(flags)
 	call := C.igColorEdit4(a0, a1, a2)
 	return (bool)(call)
@@ -653,7 +658,10 @@ func ColorPicker3(label string, col *mgl32.Vec3, flags ColorEditFlags) bool {
 
 func ColorPicker4(label string, col *mgl32.Vec4, flags ColorEditFlags, refCol *float32) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.float)(unsafe.Pointer(&col[0]))
+	a1 := (*C.float)(nil)
+	if col != nil {
+		a1 = (*C.float)(unsafe.Pointer(&col[0]))
+	}
 	a2 := (C.ImGuiColorEditFlags)(flags)
 	a3 := (*C.float)(unsafe.Pointer(refCol))
 	call := C.igColorPicker4(a0, a1, a2, a3)
@@ -680,7 +688,7 @@ func Columns(count int, id string, borders bool) {
 	C.igColumns(a0, a1, a2)
 }
 
-func Combo_Str(label string, currentItem *int, itemsSeparatedByZeros string, popupMaxHeightInItems int) bool {
+func Combo_Str(label string, currentItem *int32, itemsSeparatedByZeros string, popupMaxHeightInItems int) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (*C.int)(unsafe.Pointer(currentItem))
 	a2 := stringPool.StoreCString(itemsSeparatedByZeros)
@@ -689,10 +697,10 @@ func Combo_Str(label string, currentItem *int, itemsSeparatedByZeros string, pop
 	return (bool)(call)
 }
 
-func Combo_Str_arr(label string, currentItem *int, items []string, itemsCount int, popupMaxHeightInItems int) bool {
+func Combo_Str_arr(label string, currentItem *int32, items []string, itemsCount int, popupMaxHeightInItems int) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (*C.int)(unsafe.Pointer(currentItem))
-	a2 := (**C.char)(unsafe.Pointer(&items[0]))
+	a2 := stringPool.StoreCStringArray(items)
 	a3 := (C.int)(itemsCount)
 	a4 := (C.int)(popupMaxHeightInItems)
 	call := C.igCombo_Str_arr(a0, a1, a2, a3, a4)
@@ -881,7 +889,10 @@ func DockContextCalcDropPosForDocking(target *Window, targetNode *DockNode, payl
 	a3 := (*C.ImGuiDockNode)(unsafe.Pointer(payloadNode))
 	a4 := (C.ImGuiDir)(splitDir)
 	a5 := (C.bool)(splitOuter)
-	a6 := (*C.ImVec2)(unsafe.Pointer(&outPos[0]))
+	a6 := (*C.ImVec2)(nil)
+	if outPos != nil {
+		a6 = (*C.ImVec2)(unsafe.Pointer(&outPos[0]))
+	}
 	call := C.igDockContextCalcDropPosForDocking(a0, a1, a2, a3, a4, a5, a6)
 	return (bool)(call)
 }
@@ -1057,9 +1068,9 @@ func DragFloat(label string, v *float32, vSpeed float32, vMin float32, vMax floa
 	return (bool)(call)
 }
 
-func DragFloat2(label string, v [2]float32, vSpeed float32, vMin float32, vMax float32, format string, flags SliderFlags) bool {
+func DragFloat2(label string, v *[2]float32, vSpeed float32, vMin float32, vMax float32, format string, flags SliderFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.float)(unsafe.Pointer(&v[0]))
+	a1 := (*C.float)(unsafe.Pointer(v))
 	a2 := (C.float)(vSpeed)
 	a3 := (C.float)(vMin)
 	a4 := (C.float)(vMax)
@@ -1083,7 +1094,10 @@ func DragFloat3(label string, v *mgl32.Vec3, vSpeed float32, vMin float32, vMax 
 
 func DragFloat4(label string, v *mgl32.Vec4, vSpeed float32, vMin float32, vMax float32, format string, flags SliderFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.float)(unsafe.Pointer(&v[0]))
+	a1 := (*C.float)(nil)
+	if v != nil {
+		a1 = (*C.float)(unsafe.Pointer(&v[0]))
+	}
 	a2 := (C.float)(vSpeed)
 	a3 := (C.float)(vMin)
 	a4 := (C.float)(vMax)
@@ -1107,7 +1121,7 @@ func DragFloatRange2(label string, vCurrentMin *float32, vCurrentMax *float32, v
 	return (bool)(call)
 }
 
-func DragInt(label string, v *int, vSpeed float32, vMin int, vMax int, format string, flags SliderFlags) bool {
+func DragInt(label string, v *int32, vSpeed float32, vMin int, vMax int, format string, flags SliderFlags) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (*C.int)(unsafe.Pointer(v))
 	a2 := (C.float)(vSpeed)
@@ -1119,9 +1133,9 @@ func DragInt(label string, v *int, vSpeed float32, vMin int, vMax int, format st
 	return (bool)(call)
 }
 
-func DragInt2(label string, v [2]int, vSpeed float32, vMin int, vMax int, format string, flags SliderFlags) bool {
+func DragInt2(label string, v *[2]int32, vSpeed float32, vMin int, vMax int, format string, flags SliderFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.int)(unsafe.Pointer(&v[0]))
+	a1 := (*C.int)(unsafe.Pointer(v))
 	a2 := (C.float)(vSpeed)
 	a3 := (C.int)(vMin)
 	a4 := (C.int)(vMax)
@@ -1131,9 +1145,9 @@ func DragInt2(label string, v [2]int, vSpeed float32, vMin int, vMax int, format
 	return (bool)(call)
 }
 
-func DragInt3(label string, v [3]int, vSpeed float32, vMin int, vMax int, format string, flags SliderFlags) bool {
+func DragInt3(label string, v *[3]int32, vSpeed float32, vMin int, vMax int, format string, flags SliderFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.int)(unsafe.Pointer(&v[0]))
+	a1 := (*C.int)(unsafe.Pointer(v))
 	a2 := (C.float)(vSpeed)
 	a3 := (C.int)(vMin)
 	a4 := (C.int)(vMax)
@@ -1143,9 +1157,9 @@ func DragInt3(label string, v [3]int, vSpeed float32, vMin int, vMax int, format
 	return (bool)(call)
 }
 
-func DragInt4(label string, v [4]int, vSpeed float32, vMin int, vMax int, format string, flags SliderFlags) bool {
+func DragInt4(label string, v *[4]int32, vSpeed float32, vMin int, vMax int, format string, flags SliderFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.int)(unsafe.Pointer(&v[0]))
+	a1 := (*C.int)(unsafe.Pointer(v))
 	a2 := (C.float)(vSpeed)
 	a3 := (C.int)(vMin)
 	a4 := (C.int)(vMax)
@@ -1155,7 +1169,7 @@ func DragInt4(label string, v [4]int, vSpeed float32, vMin int, vMax int, format
 	return (bool)(call)
 }
 
-func DragIntRange2(label string, vCurrentMin *int, vCurrentMax *int, vSpeed float32, vMin int, vMax int, format string, formatMax string, flags SliderFlags) bool {
+func DragIntRange2(label string, vCurrentMin *int32, vCurrentMax *int32, vSpeed float32, vMin int, vMax int, format string, formatMax string, flags SliderFlags) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (*C.int)(unsafe.Pointer(vCurrentMin))
 	a2 := (*C.int)(unsafe.Pointer(vCurrentMax))
@@ -2148,9 +2162,9 @@ func InputFloat(label string, v *float32, step float32, stepFast float32, format
 	return (bool)(call)
 }
 
-func InputFloat2(label string, v [2]float32, format string, flags InputTextFlags) bool {
+func InputFloat2(label string, v *[2]float32, format string, flags InputTextFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.float)(unsafe.Pointer(&v[0]))
+	a1 := (*C.float)(unsafe.Pointer(v))
 	a2 := stringPool.StoreCString(format)
 	a3 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputFloat2(a0, a1, a2, a3)
@@ -2168,14 +2182,17 @@ func InputFloat3(label string, v *mgl32.Vec3, format string, flags InputTextFlag
 
 func InputFloat4(label string, v *mgl32.Vec4, format string, flags InputTextFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.float)(unsafe.Pointer(&v[0]))
+	a1 := (*C.float)(nil)
+	if v != nil {
+		a1 = (*C.float)(unsafe.Pointer(&v[0]))
+	}
 	a2 := stringPool.StoreCString(format)
 	a3 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputFloat4(a0, a1, a2, a3)
 	return (bool)(call)
 }
 
-func InputInt(label string, v *int, step int, stepFast int, flags InputTextFlags) bool {
+func InputInt(label string, v *int32, step int, stepFast int, flags InputTextFlags) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (*C.int)(unsafe.Pointer(v))
 	a2 := (C.int)(step)
@@ -2185,25 +2202,25 @@ func InputInt(label string, v *int, step int, stepFast int, flags InputTextFlags
 	return (bool)(call)
 }
 
-func InputInt2(label string, v [2]int, flags InputTextFlags) bool {
+func InputInt2(label string, v *[2]int32, flags InputTextFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.int)(unsafe.Pointer(&v[0]))
+	a1 := (*C.int)(unsafe.Pointer(v))
 	a2 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputInt2(a0, a1, a2)
 	return (bool)(call)
 }
 
-func InputInt3(label string, v [3]int, flags InputTextFlags) bool {
+func InputInt3(label string, v *[3]int32, flags InputTextFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.int)(unsafe.Pointer(&v[0]))
+	a1 := (*C.int)(unsafe.Pointer(v))
 	a2 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputInt3(a0, a1, a2)
 	return (bool)(call)
 }
 
-func InputInt4(label string, v [4]int, flags InputTextFlags) bool {
+func InputInt4(label string, v *[4]int32, flags InputTextFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.int)(unsafe.Pointer(&v[0]))
+	a1 := (*C.int)(unsafe.Pointer(v))
 	a2 := (C.ImGuiInputTextFlags)(flags)
 	call := C.igInputInt4(a0, a1, a2)
 	return (bool)(call)
@@ -2573,7 +2590,10 @@ func IsMouseKey(key Key) bool {
 }
 
 func IsMousePosValid(mousePos *mgl32.Vec2) bool {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&mousePos[0]))
+	a0 := (*C.ImVec2)(nil)
+	if mousePos != nil {
+		a0 = (*C.ImVec2)(unsafe.Pointer(&mousePos[0]))
+	}
 	call := C.igIsMousePosValid(a0)
 	return (bool)(call)
 }
@@ -2759,10 +2779,10 @@ func LabelText(label string, vfmt string, vargs ...interface{}) {
 	C.wrap_igLabelText(a0, a1)
 }
 
-func ListBox_Str_arr(label string, currentItem *int, items []string, itemsCount int, heightInItems int) bool {
+func ListBox_Str_arr(label string, currentItem *int32, items []string, itemsCount int, heightInItems int) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (*C.int)(unsafe.Pointer(currentItem))
-	a2 := (**C.char)(unsafe.Pointer(&items[0]))
+	a2 := stringPool.StoreCStringArray(items)
 	a3 := (C.int)(itemsCount)
 	a4 := (C.int)(heightInItems)
 	call := C.igListBox_Str_arr(a0, a1, a2, a3, a4)
@@ -2807,7 +2827,10 @@ func LogFinish() {
 }
 
 func LogRenderedText(refPos *mgl32.Vec2, text string, textEnd string) {
-	a0 := (*C.ImVec2)(unsafe.Pointer(&refPos[0]))
+	a0 := (*C.ImVec2)(nil)
+	if refPos != nil {
+		a0 = (*C.ImVec2)(unsafe.Pointer(&refPos[0]))
+	}
 	a1 := stringPool.StoreCString(text)
 	a2 := stringPool.StoreCString(textEnd)
 	C.igLogRenderedText(a0, a1, a2)
@@ -3236,7 +3259,7 @@ func RadioButton_Bool(label string, active bool) bool {
 	return (bool)(call)
 }
 
-func RadioButton_IntPtr(label string, v *int, vButton int) bool {
+func RadioButton_IntPtr(label string, v *int32, vButton int) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (*C.int)(unsafe.Pointer(v))
 	a2 := (C.int)(vButton)
@@ -3412,7 +3435,10 @@ func RenderTextClipped(posMin mgl32.Vec2, posMax mgl32.Vec2, text string, textEn
 	a1 := mglVec2ToImVec2(posMax)
 	a2 := stringPool.StoreCString(text)
 	a3 := stringPool.StoreCString(textEnd)
-	a4 := (*C.ImVec2)(unsafe.Pointer(&textSizeIfKnown[0]))
+	a4 := (*C.ImVec2)(nil)
+	if textSizeIfKnown != nil {
+		a4 = (*C.ImVec2)(unsafe.Pointer(&textSizeIfKnown[0]))
+	}
 	a5 := mglVec2ToImVec2(align)
 	a6 := (*C.ImRect)(unsafe.Pointer(clipRect))
 	C.igRenderTextClipped(a0, a1, a2, a3, a4, a5, a6)
@@ -3424,7 +3450,10 @@ func RenderTextClippedEx(drawList *DrawList, posMin mgl32.Vec2, posMax mgl32.Vec
 	a2 := mglVec2ToImVec2(posMax)
 	a3 := stringPool.StoreCString(text)
 	a4 := stringPool.StoreCString(textEnd)
-	a5 := (*C.ImVec2)(unsafe.Pointer(&textSizeIfKnown[0]))
+	a5 := (*C.ImVec2)(nil)
+	if textSizeIfKnown != nil {
+		a5 = (*C.ImVec2)(unsafe.Pointer(&textSizeIfKnown[0]))
+	}
 	a6 := mglVec2ToImVec2(align)
 	a7 := (*C.ImRect)(unsafe.Pointer(clipRect))
 	C.igRenderTextClippedEx(a0, a1, a2, a3, a4, a5, a6, a7)
@@ -3437,7 +3466,10 @@ func RenderTextEllipsis(drawList *DrawList, posMin mgl32.Vec2, posMax mgl32.Vec2
 	a3 := (C.float)(ellipsisMaxX)
 	a4 := stringPool.StoreCString(text)
 	a5 := stringPool.StoreCString(textEnd)
-	a6 := (*C.ImVec2)(unsafe.Pointer(&textSizeIfKnown[0]))
+	a6 := (*C.ImVec2)(nil)
+	if textSizeIfKnown != nil {
+		a6 = (*C.ImVec2)(unsafe.Pointer(&textSizeIfKnown[0]))
+	}
 	C.igRenderTextEllipsis(a0, a1, a2, a3, a4, a5, a6)
 }
 
@@ -4203,9 +4235,9 @@ func SliderFloat(label string, v *float32, vMin float32, vMax float32, format st
 	return (bool)(call)
 }
 
-func SliderFloat2(label string, v [2]float32, vMin float32, vMax float32, format string, flags SliderFlags) bool {
+func SliderFloat2(label string, v *[2]float32, vMin float32, vMax float32, format string, flags SliderFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.float)(unsafe.Pointer(&v[0]))
+	a1 := (*C.float)(unsafe.Pointer(v))
 	a2 := (C.float)(vMin)
 	a3 := (C.float)(vMax)
 	a4 := stringPool.StoreCString(format)
@@ -4227,7 +4259,10 @@ func SliderFloat3(label string, v *mgl32.Vec3, vMin float32, vMax float32, forma
 
 func SliderFloat4(label string, v *mgl32.Vec4, vMin float32, vMax float32, format string, flags SliderFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.float)(unsafe.Pointer(&v[0]))
+	a1 := (*C.float)(nil)
+	if v != nil {
+		a1 = (*C.float)(unsafe.Pointer(&v[0]))
+	}
 	a2 := (C.float)(vMin)
 	a3 := (C.float)(vMax)
 	a4 := stringPool.StoreCString(format)
@@ -4236,7 +4271,7 @@ func SliderFloat4(label string, v *mgl32.Vec4, vMin float32, vMax float32, forma
 	return (bool)(call)
 }
 
-func SliderInt(label string, v *int, vMin int, vMax int, format string, flags SliderFlags) bool {
+func SliderInt(label string, v *int32, vMin int, vMax int, format string, flags SliderFlags) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := (*C.int)(unsafe.Pointer(v))
 	a2 := (C.int)(vMin)
@@ -4247,9 +4282,9 @@ func SliderInt(label string, v *int, vMin int, vMax int, format string, flags Sl
 	return (bool)(call)
 }
 
-func SliderInt2(label string, v [2]int, vMin int, vMax int, format string, flags SliderFlags) bool {
+func SliderInt2(label string, v *[2]int32, vMin int, vMax int, format string, flags SliderFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.int)(unsafe.Pointer(&v[0]))
+	a1 := (*C.int)(unsafe.Pointer(v))
 	a2 := (C.int)(vMin)
 	a3 := (C.int)(vMax)
 	a4 := stringPool.StoreCString(format)
@@ -4258,9 +4293,9 @@ func SliderInt2(label string, v [2]int, vMin int, vMax int, format string, flags
 	return (bool)(call)
 }
 
-func SliderInt3(label string, v [3]int, vMin int, vMax int, format string, flags SliderFlags) bool {
+func SliderInt3(label string, v *[3]int32, vMin int, vMax int, format string, flags SliderFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.int)(unsafe.Pointer(&v[0]))
+	a1 := (*C.int)(unsafe.Pointer(v))
 	a2 := (C.int)(vMin)
 	a3 := (C.int)(vMax)
 	a4 := stringPool.StoreCString(format)
@@ -4269,9 +4304,9 @@ func SliderInt3(label string, v [3]int, vMin int, vMax int, format string, flags
 	return (bool)(call)
 }
 
-func SliderInt4(label string, v [4]int, vMin int, vMax int, format string, flags SliderFlags) bool {
+func SliderInt4(label string, v *[4]int32, vMin int, vMax int, format string, flags SliderFlags) bool {
 	a0 := stringPool.StoreCString(label)
-	a1 := (*C.int)(unsafe.Pointer(&v[0]))
+	a1 := (*C.int)(unsafe.Pointer(v))
 	a2 := (C.int)(vMin)
 	a3 := (C.int)(vMax)
 	a4 := stringPool.StoreCString(format)
@@ -5203,7 +5238,7 @@ func VSliderFloat(label string, size mgl32.Vec2, v *float32, vMin float32, vMax 
 	return (bool)(call)
 }
 
-func VSliderInt(label string, size mgl32.Vec2, v *int, vMin int, vMax int, format string, flags SliderFlags) bool {
+func VSliderInt(label string, size mgl32.Vec2, v *int32, vMin int, vMax int, format string, flags SliderFlags) bool {
 	a0 := stringPool.StoreCString(label)
 	a1 := mglVec2ToImVec2(size)
 	a2 := (*C.int)(unsafe.Pointer(v))

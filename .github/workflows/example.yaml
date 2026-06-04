@@ -22,6 +22,9 @@ jobs:
       - name: Build
         run: |
           go build -ldflags="-s -w" -o poc ./example
+      - name: Test
+        run: |
+          go test ./...
 
   linux:
     name: Linux
@@ -43,6 +46,13 @@ jobs:
       - name: Build
         run: |
           go build -ldflags="-s -w" -o poc ./example
+      - name: Test
+        run: |
+          go test ./...
+      - name: Generated Drift
+        run: |
+          go generate ./...
+          git diff --exit-code
 
   macOSamd64:
     name: MacOS (amd64)
@@ -60,6 +70,9 @@ jobs:
       - name: Build
         run: |
           go build -ldflags="-s -w" -o poc ./example
+      - name: Test
+        run: |
+          go test ./...
 
   macOSarm64:
     name: MacOS (arm64)
@@ -77,3 +90,6 @@ jobs:
       - name: Build
         run: |
           go build -ldflags="-s -w" -o poc ./example
+      - name: Test
+        run: |
+          go test ./...

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"go/format"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -42,9 +43,53 @@ type definitionT struct {
 		Name string `json:"name"`
 		Type string `json:"type"`
 	} `json:"argsT"`
-	Name           string `json:"cimguiname"`
-	OverloadedName string `json:"ov_cimguiname"`
-	Ret            string `json:"ret"`
+	Name           string            `json:"cimguiname"`
+	Defaults       map[string]string `json:"defaults"`
+	Namespace      string            `json:"namespace"`
+	OverloadedName string            `json:"ov_cimguiname"`
+	Ret            string            `json:"ret"`
+	Signature      string            `json:"signature"`
+	StructName     string            `json:"stname"`
+	Constructor    bool              `json:"constructor"`
+	Destructor     bool              `json:"destructor"`
+	Location       string            `json:"location"`
+}
+
+type paramIR struct {
+	Name          string `json:"name"`
+	CType         string `json:"cType"`
+	GoType        string `json:"goType,omitempty"`
+	CgoType       string `json:"cgoType,omitempty"`
+	Default       string `json:"default,omitempty"`
+	BufferSizeFor string `json:"bufferSizeFor,omitempty"`
+	StringArray   bool   `json:"stringArray,omitempty"`
+	Optional      bool   `json:"optional,omitempty"`
+}
+
+type functionIR struct {
+	CName           string    `json:"cName"`
+	OverloadedCName string    `json:"overloadedCName"`
+	GoName          string    `json:"goName,omitempty"`
+	FullGoName      string    `json:"fullGoName,omitempty"`
+	Namespace       string    `json:"namespace,omitempty"`
+	StructName      string    `json:"structName,omitempty"`
+	Location        string    `json:"location,omitempty"`
+	ReturnType      string    `json:"returnType,omitempty"`
+	GoReturnType    string    `json:"goReturnType,omitempty"`
+	Params          []paramIR `json:"params,omitempty"`
+	Variadic        bool      `json:"variadic,omitempty"`
+	DefaultWrapper  bool      `json:"defaultWrapper,omitempty"`
+	Constructor     bool      `json:"constructor,omitempty"`
+	Destructor      bool      `json:"destructor,omitempty"`
+	SkipReason      string    `json:"skipReason,omitempty"`
+}
+
+type generatorReport struct {
+	GeneratedCoreFunctions int          `json:"generatedCoreFunctions"`
+	DefaultWrappers        int          `json:"defaultWrappers"`
+	VariadicWrappers       int          `json:"variadicWrappers"`
+	SkippedCoreFunctions   []functionIR `json:"skippedCoreFunctions,omitempty"`
+	BackendFunctions       []functionIR `json:"backendFunctions,omitempty"`
 }
 
 var cEnumCastPattern = regexp.MustCompile(`\([A-Za-z_][A-Za-z0-9_]*\)`)
@@ -74,6 +119,17 @@ func main() {
 	// Parse the JSON file.
 	var definitions definitionsT
 	err = json.NewDecoder(bytes.NewReader(content)).Decode(&definitions)
+	if err != nil {
+		panic(err)
+	}
+
+	content, err = os.ReadFile("thirdparty/cimgui/generator/output/impl_definitions.json")
+	if err != nil {
+		panic(err)
+	}
+
+	var implDefinitions definitionsT
+	err = json.NewDecoder(bytes.NewReader(content)).Decode(&implDefinitions)
 	if err != nil {
 		panic(err)
 	}
@@ -123,6 +179,7 @@ func main() {
 	generateDefinitions(definitions)
 	generateWrappersHeaders(definitions)
 	generateWrappersSources(definitions)
+	generateReport(definitions, implDefinitions)
 }
 
 func copyFile(src, dst string) {
@@ -147,8 +204,22 @@ func copyFile(src, dst string) {
 	fmt.Printf("Copied file %s to %s\n", src, dst)
 }
 
+func writeGoFile(path string, content string) {
+	formatted, err := format.Source([]byte(content))
+	if err != nil {
+		panic(fmt.Errorf("format %s: %w", path, err))
+	}
+
+	err = os.WriteFile(path, formatted, 0644)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func generateConstants(structsAndEnums *structsAndEnumsT) {
 	constantsContent := strings.Builder{}
+	constantsContent.WriteString("//go:build cgo\n")
+	constantsContent.WriteString("\n")
 	constantsContent.WriteString("package imgui\n")
 	constantsContent.WriteString("\n")
 
@@ -174,10 +245,7 @@ func generateConstants(structsAndEnums *structsAndEnumsT) {
 		constantsContent.WriteString(fmt.Sprintf("const %s = %s\n", renamedName, renamedValue))
 	}
 
-	err := os.WriteFile("imgui_constants.go", []byte(constantsContent.String()), 0644)
-	if err != nil {
-		panic(err)
-	}
+	writeGoFile("imgui_constants.go", constantsContent.String())
 }
 
 func isImLike(s string) bool {
@@ -192,6 +260,8 @@ func isImLike(s string) bool {
 
 func generateTypedefs(typedefsDict typedefsDictT) {
 	typedefsContent := strings.Builder{}
+	typedefsContent.WriteString("//go:build cgo\n")
+	typedefsContent.WriteString("\n")
 	typedefsContent.WriteString("package imgui\n")
 	typedefsContent.WriteString("\n")
 	typedefsContent.WriteString("// #define CIMGUI_DEFINE_ENUMS_AND_STRUCTS 1\n")
@@ -241,10 +311,7 @@ func generateTypedefs(typedefsDict typedefsDictT) {
 		typedefsContent.WriteString(fmt.Sprintf("type %s C.%s\n", cToGoType(name), name))
 	}
 
-	err := os.WriteFile("imgui_typedefs.go", []byte(typedefsContent.String()), 0644)
-	if err != nil {
-		panic(err)
-	}
+	writeGoFile("imgui_typedefs.go", typedefsContent.String())
 }
 
 func cToCgoType(cType string) string {
@@ -336,19 +403,19 @@ func cToGoType(cType string) string {
 	case "int":
 		return "int"
 	case "int*":
-		return "*int"
+		return "*int32"
 	case "int[2]":
-		return "[2]int"
+		return "*[2]int32"
 	case "int[3]":
-		return "[3]int"
+		return "*[3]int32"
 	case "int[4]":
-		return "[4]int"
+		return "*[4]int32"
 	case "float":
 		return "float32"
 	case "float*":
 		return "*float32"
 	case "float[2]":
-		return "[2]float32"
+		return "*[2]float32"
 	case "float[3]":
 		return "*mgl32.Vec3"
 	case "float[4]":
@@ -366,7 +433,7 @@ func cToGoType(cType string) string {
 	case "char*":
 		return "string"
 	case "unsigned int*":
-		return "*uint"
+		return "*uint32"
 	case "unsigned int":
 		return "uint"
 	case "void*":
@@ -447,9 +514,293 @@ func safeIdentifier(s string) string {
 	switch s {
 	case "type":
 		return "ty"
+	case "func":
+		return "fn"
+	case "map":
+		return "m"
+	case "range":
+		return "rangeArg"
+	case "string":
+		return "str"
 	}
 
 	return s
+}
+
+func hasVariadic(def definitionT) bool {
+	for _, arg := range def.ArgsT {
+		if arg.Name == "..." {
+			return true
+		}
+	}
+	return false
+}
+
+func shouldGenerateCoreFunction(def definitionT) (bool, string) {
+	blacklist := []string{
+		"igNewFrame",                 // Needed to be overridden to control the pool memory allocator.
+		"igGetAllocatorFunctions",    // Won't be tweaking the allocator functions from Go.
+		"igAddDrawListToDrawDataEx",  // TODO: Wants an ImVector_ImDrawListPtr*
+		"igDockBuilderCopyDockSpace", // TODO: Wants a ImVector_const_charPtr*
+		"igDockBuilderCopyNode",      // TODO: Wants a ImVector_ImGuiID*
+	}
+
+	if slices.Contains(blacklist, def.OverloadedName) {
+		return false, "blacklisted"
+	}
+
+	if !strings.HasPrefix(def.OverloadedName, "ig") {
+		return false, "non-imgui namespace"
+	}
+
+	if strings.HasPrefix(def.OverloadedName, "igIm") {
+		return false, "internal helper"
+	}
+
+	renamedName := strings.TrimPrefix(def.OverloadedName, "ig")
+	if isImLike(renamedName) {
+		renamedName = renamedName[2:]
+	}
+
+	if strings.HasPrefix(renamedName, "Debug") {
+		return false, "debug helper"
+	}
+
+	for _, arg := range def.ArgsT {
+		if arg.Type == "va_list" {
+			return false, "va_list"
+		}
+	}
+
+	for _, arg := range def.ArgsT {
+		if strings.Contains(arg.Type, "(*)") {
+			return false, "function pointer"
+		}
+	}
+
+	return true, ""
+}
+
+func trailingDefaultStart(def definitionT) int {
+	if len(def.Defaults) == 0 || hasVariadic(def) {
+		return len(def.ArgsT)
+	}
+
+	start := len(def.ArgsT)
+	for start > 0 {
+		arg := def.ArgsT[start-1]
+		if _, ok := def.Defaults[arg.Name]; !ok {
+			break
+		}
+		start--
+	}
+
+	if start == len(def.ArgsT) {
+		return len(def.ArgsT)
+	}
+
+	for i := start; i < len(def.ArgsT); i++ {
+		if _, ok := def.Defaults[def.ArgsT[i].Name]; !ok {
+			return len(def.ArgsT)
+		}
+	}
+
+	return start
+}
+
+func goDefaultExpr(def definitionT, argIndex int) (string, bool) {
+	arg := def.ArgsT[argIndex]
+	value, ok := def.Defaults[arg.Name]
+	if !ok {
+		return "", false
+	}
+
+	value = strings.TrimSpace(value)
+	goType := goArgumentType(def, argIndex)
+
+	switch value {
+	case "NULL", "nullptr", "((void*)0)":
+		if goType == "string" {
+			return "\"\"", true
+		}
+		return "nil", strings.HasPrefix(goType, "*") || goType == "unsafe.Pointer"
+	case "false":
+		return "false", true
+	case "true":
+		return "true", true
+	case "0", "0.0f", "0.0":
+		if goType == "mgl32.Vec2" {
+			return "mgl32.Vec2{}", true
+		}
+		if goType == "mgl32.Vec4" {
+			return "mgl32.Vec4{}", true
+		}
+		return "0", true
+	}
+
+	if value == "ImVec2(0,0)" || value == "ImVec2(0.0f,0.0f)" {
+		return "mgl32.Vec2{}", goType == "mgl32.Vec2"
+	}
+	if value == "ImVec4(0,0,0,0)" || value == "ImVec4(0.0f,0.0f,0.0f,0.0f)" {
+		return "mgl32.Vec4{}", goType == "mgl32.Vec4"
+	}
+
+	if strings.HasPrefix(value, "ImGui") {
+		return strings.TrimPrefix(value, "ImGui"), true
+	}
+
+	return "", false
+}
+
+func canGenerateDefaultWrapper(def definitionT) (ok bool) {
+	defer func() {
+		if recover() != nil {
+			ok = false
+		}
+	}()
+
+	start := trailingDefaultStart(def)
+	if start == len(def.ArgsT) {
+		return false
+	}
+
+	for i := start; i < len(def.ArgsT); i++ {
+		if isCharBufferSizeArgument(def, i) {
+			continue
+		}
+		if _, ok := goDefaultExpr(def, i); !ok {
+			return false
+		}
+	}
+
+	return true
+}
+
+func goNameForDefinition(def definitionT) string {
+	renamedName := strings.TrimPrefix(def.OverloadedName, "ig")
+	if isImLike(renamedName) {
+		renamedName = renamedName[2:]
+	}
+	return renamedName
+}
+
+func safeCToGoType(cType string) (goType string, ok bool) {
+	defer func() {
+		if recover() != nil {
+			goType = ""
+			ok = false
+		}
+	}()
+	return cToGoType(cType), true
+}
+
+func safeCToCgoType(cType string) (cgoType string, ok bool) {
+	defer func() {
+		if recover() != nil {
+			cgoType = ""
+			ok = false
+		}
+	}()
+	return cToCgoType(cType), true
+}
+
+func buildFunctionIR(def definitionT, backend bool) functionIR {
+	ir := functionIR{
+		CName:           def.Name,
+		OverloadedCName: def.OverloadedName,
+		GoName:          goNameForDefinition(def),
+		Namespace:       def.Namespace,
+		StructName:      def.StructName,
+		Location:        def.Location,
+		ReturnType:      def.Ret,
+		Variadic:        hasVariadic(def),
+		Constructor:     def.Constructor,
+		Destructor:      def.Destructor,
+	}
+
+	ir.FullGoName = ir.GoName
+
+	if def.Ret != "" && def.Ret != "void" {
+		if goType, ok := safeCToGoType(def.Ret); ok {
+			ir.GoReturnType = goType
+		}
+	}
+
+	for i, arg := range def.ArgsT {
+		param := paramIR{
+			Name:  arg.Name,
+			CType: arg.Type,
+		}
+
+		if value, ok := def.Defaults[arg.Name]; ok {
+			param.Default = value
+			param.Optional = value == "NULL" || value == "nullptr" || value == "((void*)0)"
+		}
+
+		if isCharBufferSizeArgument(def, i) {
+			param.BufferSizeFor = safeIdentifier(def.ArgsT[i-1].Name)
+		} else if goType, ok := safeCToGoType(arg.Type); ok {
+			param.GoType = goType
+			param.StringArray = goType == "[]string"
+		}
+
+		if cgoType, ok := safeCToCgoType(arg.Type); ok {
+			param.CgoType = cgoType
+		}
+
+		ir.Params = append(ir.Params, param)
+	}
+
+	if backend {
+		ir.GoName = ""
+		ir.FullGoName = ""
+	}
+
+	return ir
+}
+
+func flattenDefinitions(definitions definitionsT) []definitionT {
+	flattened := make([]definitionT, 0, len(definitions))
+	for _, definition := range definitions {
+		flattened = append(flattened, definition...)
+	}
+	sort.Slice(flattened, func(i, j int) bool {
+		return flattened[i].OverloadedName < flattened[j].OverloadedName
+	})
+	return flattened
+}
+
+func generateReport(definitions definitionsT, implDefinitions definitionsT) {
+	report := generatorReport{}
+
+	for _, def := range flattenDefinitions(definitions) {
+		shouldGenerate, reason := shouldGenerateCoreFunction(def)
+		ir := buildFunctionIR(def, false)
+		if !shouldGenerate {
+			ir.SkipReason = reason
+			report.SkippedCoreFunctions = append(report.SkippedCoreFunctions, ir)
+			continue
+		}
+
+		report.GeneratedCoreFunctions++
+		if ir.Variadic {
+			report.VariadicWrappers++
+		}
+	}
+
+	for _, def := range flattenDefinitions(implDefinitions) {
+		report.BackendFunctions = append(report.BackendFunctions, buildFunctionIR(def, true))
+	}
+
+	content, err := json.MarshalIndent(report, "", "  ")
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.WriteFile("generator_report.json", append(content, '\n'), 0644)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func goArgumentType(def definitionT, argIndex int) string {
@@ -480,6 +831,8 @@ func isCharBufferSizeArgument(def definitionT, argIndex int) bool {
 
 func generateDefinitions(definitions definitionsT) {
 	output := strings.Builder{}
+	output.WriteString("//go:build cgo\n")
+	output.WriteString("\n")
 	output.WriteString("package imgui\n")
 	output.WriteString("\n")
 	output.WriteString("// #define CIMGUI_DEFINE_ENUMS_AND_STRUCTS 1\n")
@@ -500,69 +853,20 @@ func generateDefinitions(definitions definitionsT) {
 		return sortedDefinitions[i].OverloadedName < sortedDefinitions[j].OverloadedName
 	})
 
-	blacklist := []string{
-		"igNewFrame",                 // Needed to be overridden to control the pool memory allocator.
-		"igGetAllocatorFunctions",    // Wont be tweaking the allocator functions from Go.
-		"igAddDrawListToDrawDataEx",  // TODO: Wants an ImVector_ImDrawListPtr*
-		"igDockBuilderCopyDockSpace", // TODO: Wants a ImVector_const_charPtr*
-		"igDockBuilderCopyNode",      // TODO: Wants a ImVector_ImGuiID*
-	}
-
 	for _, def := range sortedDefinitions {
-		if slices.Contains(blacklist, def.OverloadedName) {
-			continue
-		}
-
-		if !strings.HasPrefix(def.OverloadedName, "ig") {
-			continue
-		}
-
-		if strings.HasPrefix(def.OverloadedName, "igIm") {
+		shouldGenerate, _ := shouldGenerateCoreFunction(def)
+		if !shouldGenerate {
 			continue
 		}
 
 		// fmt.Println("=>", def.OverloadedName)
 
-		renamedName := strings.TrimPrefix(def.OverloadedName, "ig")
-		if isImLike(renamedName) {
-			renamedName = renamedName[2:]
-		}
-
-		// Skip the debug functions.
-		if strings.HasPrefix(renamedName, "Debug") {
-			continue
-		}
-
-		// Skip va_list functions.
-		hasVaList := false
-		for _, arg := range def.ArgsT {
-			if arg.Type == "va_list" {
-				hasVaList = true
-				break
-			}
-		}
-
-		if hasVaList {
-			continue
-		}
-
-		// Skip functions with function pointer parameters for now.
-		hasFunctionPointer := false
-		for _, arg := range def.ArgsT {
-			if strings.Contains(arg.Type, "(*)") {
-				hasFunctionPointer = true
-				break
-			}
-		}
-
-		if hasFunctionPointer {
-			continue
-		}
+		renamedName := goNameForDefinition(def)
 
 		output.WriteString(fmt.Sprintf("func %s(", renamedName))
 
 		// Parameters.
-		hasVariadic := false
+		defHasVariadic := false
 		{
 			params := []string{}
 			for i, arg := range def.ArgsT {
@@ -570,7 +874,7 @@ func generateDefinitions(definitions definitionsT) {
 
 				if isNextArgumentVariadic {
 					params = append(params, "vfmt string, vargs ...interface{}")
-					hasVariadic = true
+					defHasVariadic = true
 					break
 				} else if isCharBufferSizeArgument(def, i) {
 					continue
@@ -617,6 +921,8 @@ func generateDefinitions(definitions definitionsT) {
 				} else if isCharBufferSizeArgument(def, i) {
 					previousArgName := safeIdentifier(def.ArgsT[i-1].Name)
 					output.WriteString(fmt.Sprintf("(%s)(len(%s))", cgoType, previousArgName))
+				} else if goType == "[]string" {
+					output.WriteString(fmt.Sprintf("stringPool.StoreCStringArray(%s)", expr))
 				} else {
 					switch goType {
 					case "string":
@@ -626,9 +932,13 @@ func generateDefinitions(definitions definitionsT) {
 					case "mgl32.Vec4":
 						expr = fmt.Sprintf("mglVec4ToImVec4(%s)", expr)
 					case "*mgl32.Vec2":
-						expr = fmt.Sprintf("(%s)(unsafe.Pointer(&%s[0]))", cgoType, expr)
+						output.WriteString(fmt.Sprintf("(%s)(nil)\n\tif %s != nil {\n\t\ta%d = (%s)(unsafe.Pointer(&%s[0]))\n\t}", cgoType, expr, i, cgoType, expr))
+						output.WriteString("\n")
+						continue
 					case "*mgl32.Vec4":
-						expr = fmt.Sprintf("(%s)(unsafe.Pointer(&%s[0]))", cgoType, expr)
+						output.WriteString(fmt.Sprintf("(%s)(nil)\n\tif %s != nil {\n\t\ta%d = (%s)(unsafe.Pointer(&%s[0]))\n\t}", cgoType, expr, i, cgoType, expr))
+						output.WriteString("\n")
+						continue
 					default:
 						if strings.HasPrefix(goType, "[") {
 							expr = fmt.Sprintf("&%s[0]", expr)
@@ -654,7 +964,7 @@ func generateDefinitions(definitions definitionsT) {
 				output.WriteString("call := ")
 			}
 
-			if hasVariadic {
+			if defHasVariadic {
 				output.WriteString(fmt.Sprintf("C.wrap_%s(", def.OverloadedName))
 			} else {
 				output.WriteString(fmt.Sprintf("C.%s(", def.OverloadedName))
@@ -699,12 +1009,10 @@ func generateDefinitions(definitions definitionsT) {
 		}
 
 		output.WriteString("}\n\n")
+
 	}
 
-	err := os.WriteFile("imgui_functions.go", []byte(output.String()), 0644)
-	if err != nil {
-		panic(err)
-	}
+	writeGoFile("imgui_functions.go", output.String())
 }
 
 func wrapperPrototypeForDefinition(def definitionT) string {
@@ -744,15 +1052,8 @@ func generateWrappersSources(definitions definitionsT) {
 	})
 
 	for _, def := range sortedDefinitions {
-		isVariadic := false
-		for _, arg := range def.ArgsT {
-			if arg.Name == "..." {
-				isVariadic = true
-				break
-			}
-		}
-
-		if !isVariadic {
+		shouldGenerate, _ := shouldGenerateCoreFunction(def)
+		if !shouldGenerate || !hasVariadic(def) {
 			continue
 		}
 
@@ -772,11 +1073,12 @@ func generateWrappersSources(definitions definitionsT) {
 
 			nextArgIsVariadic := len(def.ArgsT) > i+1 && def.ArgsT[i+1].Name == "..."
 
-			output.WriteString(arg.Name)
-
 			if nextArgIsVariadic {
+				output.WriteString(arg.Name)
 				break
 			}
+
+			output.WriteString(arg.Name)
 		}
 
 		output.WriteString(");\n")
@@ -804,15 +1106,8 @@ func generateWrappersHeaders(definitions definitionsT) {
 	})
 
 	for _, def := range sortedDefinitions {
-		isVariadic := false
-		for _, arg := range def.ArgsT {
-			if arg.Name == "..." {
-				isVariadic = true
-				break
-			}
-		}
-
-		if !isVariadic {
+		shouldGenerate, _ := shouldGenerateCoreFunction(def)
+		if !shouldGenerate || !hasVariadic(def) {
 			continue
 		}
 

@@ -1,3 +1,5 @@
+//go:build cgo
+
 package imgui
 
 const ImDrawFlags_Closed = 1 << 9

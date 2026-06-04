@@ -1,3 +1,5 @@
+//go:build cgo
+
 package imgui
 
 //go:generate go run ./generator

@@ -1,24 +1,8 @@
 #define CIMGUI_DEFINE_ENUMS_AND_STRUCTS 1
 #include "dist/cimgui/cimgui.h"
 
-void wrap_ImGuiTextBuffer_appendf(ImGuiTextBuffer* self,  const char* fmt) {
-	ImGuiTextBuffer_appendf(self, fmt);
-}
-
 void wrap_igBulletText(const char* fmt) {
 	igBulletText(fmt);
-}
-
-void wrap_igDebugLog(const char* fmt) {
-	igDebugLog(fmt);
-}
-
-int wrap_igImFormatString(char* buf, size_t buf_size, const char* fmt) {
-	return igImFormatString(buf, buf_size, fmt);
-}
-
-void wrap_igImFormatStringToTempBuffer(const char** out_buf, const char** out_buf_end, const char* fmt) {
-	igImFormatStringToTempBuffer(out_buf, out_buf_end, fmt);
 }
 
 void wrap_igLabelText(const char* label, const char* fmt) {

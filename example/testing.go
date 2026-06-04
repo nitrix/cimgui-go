@@ -8,7 +8,7 @@ import (
 )
 
 var dummyBool bool
-var dummyInt int
+var dummyInt int32
 var dummyVec3 = mgl32.Vec3{0.5, 0.5, 0.5}
 var dummyTextBuffer = func() []byte {
 	buf := make([]byte, 256)

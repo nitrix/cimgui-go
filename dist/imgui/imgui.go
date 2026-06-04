@@ -1,3 +1,5 @@
+//go:build cgo
+
 package imgui
 
 //#cgo CXXFLAGS: -std=c++17 -O3

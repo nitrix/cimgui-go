@@ -1,3 +1,5 @@
+//go:build cgo
+
 package glfw
 
 // #cgo CXXFLAGS: -std=c++17 -O3
@@ -11,8 +13,8 @@ import (
 	"github.com/nitrix/glfw-go"
 )
 
-func Init(window *glfw.Window) {
-	C.ImGui_ImplGlfw_InitForOpenGL((*C.GLFWwindow)(window.Handle()), C.bool(true))
+func Init(window *glfw.Window) bool {
+	return bool(C.ImGui_ImplGlfw_InitForOpenGL((*C.GLFWwindow)(window.Handle()), C.bool(true)))
 }
 
 func NewFrame() {

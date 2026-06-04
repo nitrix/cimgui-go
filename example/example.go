@@ -1,6 +1,8 @@
 package main
 
 import (
+	"runtime"
+
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/nitrix/glfw-go"
 	"github.com/nitrix/imgui-go"
@@ -9,6 +11,8 @@ import (
 )
 
 func main() {
+	runtime.LockOSThread()
+
 	err := glfw.Init()
 	if err != nil {
 		panic(err)
@@ -46,10 +50,14 @@ func main() {
 	ctx.IO.ConfigFlags |= imgui.ConfigFlags_DockingEnable
 	ctx.IO.ConfigDockingWithShift = true
 
-	bglfw.Init(window)
+	if !bglfw.Init(window) {
+		panic("ImGui GLFW backend init failed")
+	}
 	defer bglfw.Shutdown()
 
-	bopengl3.Init(window)
+	if !bopengl3.Init(window) {
+		panic("ImGui OpenGL3 backend init failed")
+	}
 	defer bopengl3.Shutdown()
 
 	window.SetFramebufferSizeCallback(func(w *glfw.Window, width int, height int) {
